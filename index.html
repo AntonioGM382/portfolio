@@ -5,55 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Antonio Gómez Portfolio</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Antonio Gómez</h1>
-        <p>Software Developer | AI Enthusiast | Project Manager</p>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+    <!-- Header Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Antonio Gómez</h1>
+            <p>Software Developer | AI Enthusiast | Project Manager</p>
+            <a href="#projects" class="hero-btn">View My Work</a>
+        </div>
     </header>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Welcome to my portfolio! I am a passionate software developer with experience in AI, project management, and full-stack development. Explore my academic, professional, and personal projects below.</p>
-    </section>
-
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="project">
-            <img src="images/project1.png" alt="Project 1">
-            <h3>Project Title 1</h3>
-            <p>A brief description of the project and its features.</p>
-            <a href="projects/project1.html" target="_blank">Learn More</a>
-        </div>
-        <div class="project">
-            <img src="images/project2.png" alt="Project 2">
-            <h3>Project Title 2</h3>
-            <p>A brief description of the project and its features.</p>
-            <a href="projects/project2.html" target="_blank">Learn More</a>
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About Me</h2>
+            <p>
+                Welcome to my portfolio! I am a passionate software developer with experience in AI, project management, and full-stack development. 
+                Explore my academic, professional, and personal projects below.
+            </p>
         </div>
     </section>
 
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Feel free to reach out!</p>
-        <ul>
-            <li>Email: <a href="mailto:antoniogomezmt11@gmail.com">antoniogomezmt11@gmail.com</a></li>
-            <li>LinkedIn: <a href="https://linkedin.com/in/antoniogomezmtnez" target="_blank">Antonio Gómez</a></li>
-            <li>GitHub: <a href="https://github.com/yourusername" target="_blank">yourusername</a></li>
-        </ul>
+    <!-- Projects Section -->
+    <section id="projects" class="section projects">
+        <div class="container">
+            <h2>Projects</h2>
+            <div class="project-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <img src="images/project1.png" alt="Project 1">
+                    <div class="project-info">
+                        <h3>Project Title 1</h3>
+                        <p>A brief description of the project and its features.</p>
+                        <a href="projects/project1.html" class="btn">Learn More</a>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <img src="images/project2.png" alt="Project 2">
+                    <div class="project-info">
+                        <h3>Project Title 2</h3>
+                        <p>A brief description of the project and its features.</p>
+                        <a href="projects/project2.html" class="btn">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Contact</h2>
+            <p>Feel free to reach out!</p>
+            <ul class="contact-info">
+                <li>Email: <a href="mailto:antoniogomezmt11@gmail.com">antoniogomezmt11@gmail.com</a></li>
+                <li>LinkedIn: <a href="https://linkedin.com/in/antoniogomezmtnez" target="_blank">Antonio Gómez</a></li>
+                <li>GitHub: <a href="https://github.com/AntonioGM382" target="_blank">AntonioGM382</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <p>&copy; 2024 Antonio Gómez. All rights reserved.</p>
     </footer>
-
-    <script src="scripts/main.js"></script>
 </body>
 </html>
