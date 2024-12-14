@@ -4,25 +4,221 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project 1 - Antonio Gómez Portfolio</title>
-    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            text-align: center;
+            color: #fff;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            letter-spacing: 1px;
+        }
+
+        header nav a {
+            color: #00bcd4;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        header nav a:hover {
+            color: #ffffff;
+        }
+
+        .section {
+            max-width: 1200px;
+            margin: auto;
+            padding: 60px 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 60px;
+        }
+
+        .content-block {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            align-items: center;
+            gap: 40px;
+        }
+
+        .content-block:nth-child(even) .text-content {
+            grid-column: 2 / 3;
+        }
+
+        .content-block:nth-child(even) .image-content {
+            grid-column: 1 / 2;
+        }
+
+        .text-content {
+            color: #ffffff;
+        }
+
+        .text-content h2 {
+            color: #00eaff;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .text-content p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .text-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .text-content ul li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .text-content ul li::before {
+            content: '✔';
+            color: #00eaff;
+            font-size: 1rem;
+            position: absolute;
+            left: 0;
+        }
+
+        .image-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-content img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 15px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-content img:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .content-block {
+                grid-template-columns: 1fr;
+            }
+
+            .text-content, .image-content {
+                grid-column: 1 / -1;
+            }
+
+            .image-content img {
+                max-height: 300px;
+            }
+
+            .text-content h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Project Title 1</h1>
+        <h1>Project 1: AlbiPets</h1>
         <nav>
             <a href="../index.html">Back to Portfolio</a>
         </nav>
     </header>
 
-    <section>
-        <h2>Project Overview</h2>
-        <p>Detailed description of the project, technologies used, and outcomes.</p>
-        <h3>Technologies Used</h3>
-        <ul>
-            <li>Technology 1</li>
-            <li>Technology 2</li>
-            <li>Technology 3</li>
-        </ul>
+    <section class="section">
+        <!-- Row 1 -->
+        <div class="content-block">
+            <div class="text-content">
+                <h2>Project Overview</h2>
+                <p>This application offers a comprehensive platform for pet owners, including managing pet profiles, reviewing other users, and accessing pet services such as dog walking or overnight stays at others' homes.</p>
+                <p>It also allows users to search pet food, manage user profiles, and view personalized ads and messages.</p>
+            </div>
+            <div class="image-content">
+                <img src="../resources/GoodWeight/GoodWeight1.jpg" alt="Pet Profile">
+            </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="content-block">
+            <div class="image-content">
+                <img src="../resources/GoodWeight/GoodWeight2.jpg" alt="User Reviews">
+            </div>
+            <div class="text-content">
+                <h2>New Functionalities</h2>
+                <ul>
+                    <li>Search and hire services for walking dogs.</li>
+                    <li>Review users to build trust within the community.</li>
+                    <li>Search for overnight care services for pets.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="content-block">
+            <div class="text-content">
+                <h2>Technologies Used</h2>
+                <ul>
+                    <li>React Native for mobile development</li>
+                    <li>Firebase for backend and real-time database</li>
+                    <li>Cloudinary for image storage</li>
+                    <li>Custom user authentication</li>
+                </ul>
+            </div>
+            <div class="image-content">
+                <img src="../resources/GoodWeight/GoodWeight3.jpg" alt="Pet Food Search">
+            </div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="content-block">
+            <div class="image-content">
+                <img src="../resources/GoodWeight/GoodWeight4.jpg" alt="Pet Boarding">
+            </div>
+            <div class="text-content">
+                <h2>Features</h2>
+                <ul>
+                    <li>Interactive pet profiles</li>
+                    <li>Food recommendations and purchasing</li>
+                    <li>User-to-user messaging system</li>
+                    <li>Ads tailored to user preferences</li>
+                    <li>Searchable services for dog walking and pet boarding</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
     <footer>

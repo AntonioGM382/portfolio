@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 2 - Antonio Gómez Portfolio</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header nav a {
+            color: #00bcd4;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        header nav a:hover {
+            color: #fff;
+        }
+
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            gap: 20px;
+        }
+
+        .content {
+            flex: 1 1 45%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        .content h2 {
+            text-align: center;
+            color: #00796b;
+        }
+
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin: 10px 0;
+        }
+
+        .images {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .images img {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .images img:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            animation: zoomIn 0.3s;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #f00;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .content {
+                flex: 1 1 100%;
+            }
+
+            .modal-content {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Against All</h1>
+        <nav>
+            <a href="../index.html">Back to Portfolio</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Project Overview Section -->
+        <div class="content">
+            <h2>Project Overview</h2>
+            <p>Against All is a full-stack multiplayer game leveraging modular programming with ReactJS, Node.js, and Kafka. It includes real-time gameplay, interactive UI, and APIs for login, registration, and user updates.</p>
+            <p>The project also implements data encryption using AES and API integration with OpenWeather for dynamic game elements.</p>
+
+            <h3>Technologies Used</h3>
+            <ul>
+                <li>ReactJS (with mongoose, bcryptjs, socket.io)</li>
+                <li>AWS Lightsail for deployment</li>
+                <li>OpenWeather API</li>
+                <li>MongoDB</li>
+                <li>Kafka for message handling</li>
+            </ul>
+
+            <h3>Features</h3>
+            <ul>
+                <li>Dynamic board generation with weather data for zones</li>
+                <li>Real-time logs and user updates</li>
+                <li>Encryption for secure data transmission</li>
+                <li>Dockerized deployment on AWS Lightsail</li>
+            </ul>
+        </div>
+
+        <!-- Screenshots Section -->
+        <div class="content images">
+            <h3>Screenshots</h3>
+            <img src="../resources/Against All/SD-Práctica.jpg" alt="Game Interface 1" onclick="openModal(this.src)">
+            <img src="../resources/Against All/SD-Práctica2.jpg" alt="Game Interface 2" onclick="openModal(this.src)">
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modal-img">
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Antonio Gómez. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function openModal(src) {
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modal-img');
+            modal.style.display = "block";
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = "none";
+        }
+    </script>
+</body>
+</html>
