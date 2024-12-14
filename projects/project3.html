@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoList - Antonio Gómez Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            text-align: center;
+            color: #fff;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            letter-spacing: 1px;
+        }
+
+        header nav a {
+            color: #00eaff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        header nav a:hover {
+            color: #ffffff;
+        }
+
+        .section {
+            max-width: 1200px;
+            margin: auto;
+            padding: 60px 20px;
+        }
+
+        .content-block {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .content-block:nth-child(even) .text-content {
+            grid-column: 2 / 3;
+        }
+
+        .content-block:nth-child(even) .image-content {
+            grid-column: 1 / 2;
+        }
+
+        .text-content {
+            color: #ffffff;
+        }
+
+        .text-content h3 {
+            color: #00eaff;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .text-content p,
+        .text-content ul {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .text-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .text-content ul li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .text-content ul li::before {
+            content: '✔';
+            color: #00eaff;
+            font-size: 1rem;
+            position: absolute;
+            left: 0;
+        }
+
+        .image-content img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-content img:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .content-block {
+                grid-template-columns: 1fr;
+            }
+
+            .text-content, .image-content {
+                grid-column: 1 / -1;
+            }
+
+            .image-content img {
+                max-height: 300px;
+            }
+
+            .text-content h3 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ToDoList</h1>
+        <nav>
+            <a href="../index.html#projects">Back to Portfolio</a>
+        </nav>
+    </header>
+
+    <section class="section">
+        <!-- Row 1 -->
+        <div class="content-block">
+            <div class="text-content">
+                <h3>Project Overview</h3>
+                <p>The ToDoList project is a feature-rich task management system built using agile methodologies. It includes advanced features such as tasks and subtasks, tagging, filtering, and more, tailored for efficient team collaboration and personal task management.</p>
+            </div>
+            <div class="image-content">
+                <img src="../resources/ToDoList/TDL1.jpg" alt="Task List">
+            </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="content-block">
+            <div class="image-content">
+                <img src="../resources/ToDoList/TDL2.jpg" alt="Subtasks">
+            </div>
+            <div class="text-content">
+                <h3>Technologies Used</h3>
+                <ul>
+                    <li>Java Spring Boot</li>
+                    <li>Thymeleaf</li>
+                    <li>Docker</li>
+                    <li>PostgreSQL</li>
+                    <li>Spring Security</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="content-block">
+            <div class="text-content">
+                <h3>Features</h3>
+                <ul>
+                    <li>Drag and drop tasks to update states (ToDo, In Progress, Done).</li>
+                    <li>Tagging and filtering tasks.</li>
+                    <li>Weekly calendar view for tasks.</li>
+                    <li>Password recovery and user account management.</li>
+                    <li>Task assignment to teams.</li>
+                </ul>
+            </div>
+            <div class="image-content">
+                <img src="../resources/ToDoList/TDL3.jpg" alt="Weekly View">
+            </div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="content-block">
+            <div class="image-content">
+                <img src="../resources/ToDoList/TDL4.jpg" alt="Progress Board">
+            </div>
+            <div class="text-content">
+                <h3>Additional Features</h3>
+                <p>The system enables real-time collaboration, progress tracking, and integration with external tools for seamless productivity management.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Antonio Gómez. All rights reserved.</p>
+    </footer>
+</body>
+</html>
