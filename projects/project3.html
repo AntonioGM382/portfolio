@@ -105,11 +105,56 @@
             border-radius: 15px;
             box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
 
         .image-content img:hover {
             transform: scale(1.05);
             box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            animation: zoomIn 0.3s;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #f00;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
         }
 
         footer {
@@ -161,14 +206,14 @@
                 <p>The ToDoList project is a feature-rich task management system built using agile methodologies. It includes advanced features such as tasks and subtasks, tagging, filtering, and more, tailored for efficient team collaboration and personal task management.</p>
             </div>
             <div class="image-content">
-                <img src="../resources/ToDoList/TDL1.jpg" alt="Task List">
+                <img src="../resources/ToDoList/TDL1.jpg" alt="Task List" onclick="openModal(this.src)">
             </div>
         </div>
 
         <!-- Row 2 -->
         <div class="content-block">
             <div class="image-content">
-                <img src="../resources/ToDoList/TDL2.jpg" alt="Subtasks">
+                <img src="../resources/ToDoList/TDL2.jpg" alt="Subtasks" onclick="openModal(this.src)">
             </div>
             <div class="text-content">
                 <h3>Technologies Used</h3>
@@ -195,14 +240,14 @@
                 </ul>
             </div>
             <div class="image-content">
-                <img src="../resources/ToDoList/TDL3.jpg" alt="Weekly View">
+                <img src="../resources/ToDoList/TDL3.jpg" alt="Weekly View" onclick="openModal(this.src)">
             </div>
         </div>
 
         <!-- Row 4 -->
         <div class="content-block">
             <div class="image-content">
-                <img src="../resources/ToDoList/TDL4.jpg" alt="Progress Board">
+                <img src="../resources/ToDoList/TDL4.jpg" alt="Progress Board" onclick="openModal(this.src)">
             </div>
             <div class="text-content">
                 <h3>Additional Features</h3>
@@ -211,8 +256,28 @@
         </div>
     </section>
 
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="closeModal()">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modal-img">
+    </div>
+
     <footer>
         <p>&copy; 2024 Antonio Gómez. All rights reserved.</p>
     </footer>
+
+    <script>
+        function openModal(src) {
+            const modal = document.getElementById('modal');
+            const modalImg = document.getElementById('modal-img');
+            modal.style.display = 'flex';
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+    </script>
 </body>
 </html>

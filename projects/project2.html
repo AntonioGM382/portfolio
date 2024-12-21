@@ -12,7 +12,7 @@
             min-height: 100vh;
             margin: 0;
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); /* Restore dark background */
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
             color: #fff;
         }
         main {
@@ -30,9 +30,7 @@
             color: #fff;
             text-align: center;
             padding: 10px 0;
-            position: relative; /* Remove absolute positioning */
-            bottom: 0; /* No need to manually position it */
-            width: 100%; /* Ensure it spans the full width */
+            width: 100%;
         }
         header {
             background: rgba(0, 0, 0, 0.8);
@@ -206,7 +204,7 @@
         <!-- Screenshots Section -->
         <div class="content images">
             <h3>Screenshots</h3>
-            <img src="../resources/Against All/SD1.jpg" alt="Game Interface 1">
+            <img src="../resources/Against All/SD1.jpg" alt="Game Interface 1" onclick="openModal(this.src)">
             <img src="../resources/Against All/SD2.jpg" alt="Game Interface 2" onclick="openModal(this.src)">
         </div>
     </main>
