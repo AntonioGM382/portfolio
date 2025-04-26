@@ -223,8 +223,8 @@
         <!-- Screenshots Section -->
         <div class="content images">
             <h3>Screenshots</h3>
-            <img src="../resources/Against All/SD1.jpg" alt="Game Interface 1" onclick="openModal(this.src)">
-            <img src="../resources/Against All/SD2.jpg" alt="Game Interface 2" onclick="openModal(this.src)">
+            <img src="../resources/AgainstAll/SD1.jpg" alt="Game Interface 1" onclick="openModal(this.src)">
+            <img src="../resources/AgainstAll/SD2.jpg" alt="Game Interface 2" onclick="openModal(this.src)">
         </div>
     </main>
 
@@ -239,16 +239,20 @@
     </footer>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.body.style.opacity = 1;
+        });
+    
         function openModal(src) {
             const modal = document.getElementById('modal');
             const modalImg = document.getElementById('modal-img');
             modal.style.display = "block";
             modalImg.src = src;
         }
-
+    
         function closeModal() {
             document.getElementById('modal').style.display = "none";
         }
     </script>
-</body>
+    </body>
 </html>
