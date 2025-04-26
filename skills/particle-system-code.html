@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Particle System - Source Code</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #0f2027;
+      color: #00eaff;
+      padding: 60px 20px 20px;
+    }
+
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #00bcd4;
+      padding: 10px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 500;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+
+    #back:hover {
+      background: #008c9e;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00bcd4;
+      margin-top: 0;
+    }
+
+    pre {
+      background: #1e1e1e;
+      color: #00eaff;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+    <a id="back" href="../index.html#Particle">← Back to Skills</a>
+
+  <h1>Particle System - Source Code</h1>
+
+  <pre><code>
+// Particle Class
+class Particle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.radius = Math.random() * 4 + 1;
+    this.vx = (Math.random() - 0.5) * 4;
+    this.vy = (Math.random() - 0.5) * 4;
+    this.alpha = 1;
+    this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.alpha -= 0.01;
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = this.color;
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  isAlive() {
+    return this.alpha > 0;
+  }
+}
+
+canvas.addEventListener('mousemove', e => {
+  for (let i = 0; i < 5; i++) {
+    particles.push(new Particle(e.clientX, e.clientY));
+  }
+});
+
+function animate() {
+  ctx.fillStyle = 'rgba(15, 32, 39, 0.2)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  particles = particles.filter(p => p.isAlive());
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+  </code></pre>
+</body>
+</html>

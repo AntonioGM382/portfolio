@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Particle System</title>
+  <style>
+    body, html {
+      margin: 0;
+      overflow: hidden;
+      background: #0f2027;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #00bcd4;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 0.9rem;
+      z-index: 10;
+    }
+
+    #back:hover {
+      background: #008c9e;
+    }
+  </style>
+</head>
+<body>
+    <a id="back" href="../index.html#Particle">← Back to Skills</a>
+    <canvas id="canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.radius = Math.random() * 4 + 1;
+        this.vx = (Math.random() - 0.5) * 4;
+        this.vy = (Math.random() - 0.5) * 4;
+        this.alpha = 1;
+        this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha -= 0.01;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      isAlive() {
+        return this.alpha > 0;
+      }
+    }
+
+    function emitParticles(x, y) {
+      for (let i = 0; i < 5; i++) {
+        particles.push(new Particle(x, y));
+      }
+    }
+
+    canvas.addEventListener('mousemove', e => {
+      emitParticles(e.clientX, e.clientY);
+    });
+
+    function animate() {
+      ctx.fillStyle = 'rgba(15, 32, 39, 0.2)';
+      ctx.fillRect(0, 0, width, height);
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        if (!particles[i].isAlive()) particles.splice(i, 1);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

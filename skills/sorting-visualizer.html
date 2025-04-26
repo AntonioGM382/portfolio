@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sorting Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #0f2027;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    canvas {
+      background: #fff;
+      margin: 20px auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .controls {
+      margin: 20px;
+    }
+
+    button {
+      margin: 0 10px;
+      padding: 10px 15px;
+      font-size: 1rem;
+      background: rgba(0, 188, 212, 0.2);
+      backdrop-filter: blur(8px);
+      color: #00eaff;
+      font-weight: 600;
+      border: 1px solid #00bcd4;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #00eaff;
+      color: #111;
+      transform: scale(1.05);
+    }
+
+    #back {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: #00bcd4;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 500;
+        z-index: 10;
+        transition: background 0.3s;
+    }
+
+        #back:hover {
+        background: #008c9e;
+    }
+
+    .back a {
+      color: #00bcd4;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sorting Algorithms Visualizer</h1>
+    <p>Watch how different sorting algorithms operate in real-time.</p>
+  </header>
+
+  <div class="controls">
+    <button onclick="shuffleArray()">Shuffle</button>
+    <button onclick="bubbleSort(array)">Bubble Sort</button>
+    <button onclick="quickSortWrapper()">Quick Sort</button>
+  </div>
+
+  <canvas id="canvas" width="800" height="400"></canvas>
+
+  <a id="back" href="../index.html#Sorting">← Back to Skills</a>
+
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const numBars = 100;
+    const barWidth = canvas.width / numBars;
+    const maxVal = canvas.height;
+    let array = [];
+
+    function drawArray(array, highlightIndex = -1) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      array.forEach((val, i) => {
+        ctx.fillStyle = (i === highlightIndex) ? "yellow" : "#4dd0e1";
+        const height = val * (canvas.height / 2); // stairway effect
+        ctx.fillRect(i * barWidth, canvas.height - height, barWidth - 1, height);
+      });
+    }
+
+    function shuffleArray() {
+      array = Array.from({ length: numBars }, () => Math.random());
+      drawArray(array);
+    }
+
+    function sleep(ms) {
+      return new Promise(res => setTimeout(res, ms));
+    }
+
+    async function bubbleSort(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length - i - 1; j++) {
+          if (arr[j] > arr[j + 1]) {
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+          }
+          drawArray(arr, j);
+          await sleep(10);
+        }
+      }
+      drawArray(arr);
+    }
+
+    async function quickSortWrapper() {
+      await quickSort(array, 0, array.length - 1);
+      drawArray(array);
+    }
+
+    async function quickSort(arr, left, right) {
+      if (left >= right) return;
+      let pivot = arr[right];
+      let i = left;
+      for (let j = left; j < right; j++) {
+        if (arr[j] < pivot) {
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+          drawArray(arr, j);
+          await sleep(10);
+          i++;
+        }
+      }
+      [arr[i], arr[right]] = [arr[right], arr[i]];
+      drawArray(arr, i);
+      await sleep(10);
+
+      await quickSort(arr, left, i - 1);
+      await quickSort(arr, i + 1, right);
+    }
+
+    shuffleArray();
+  </script>
+</body>
+</html>

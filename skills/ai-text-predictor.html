@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Text Predictor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: #0f2027;
+      font-family: 'Roboto', sans-serif;
+      color: #00eaff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 100px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #00bcd4;
+      padding: 10px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 500;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+
+    #back:hover {
+      background: #008c9e;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #inputArea {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    input {
+      padding: 12px 15px;
+      width: 100%;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      margin-bottom: 20px;
+    }
+
+    .suggestions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .suggestion {
+      background: rgba(0, 188, 212, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-weight: 500;
+    }
+
+    .suggestion:hover {
+      background: #00eaff;
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+  <a id="back" href="../index.html#AI">← Back to Skills</a>
+
+  <h1>AI Text Predictor</h1>
+
+  <div id="inputArea">
+    <input type="text" id="textInput" placeholder="Start typing..." autocomplete="off">
+    <div id="suggestions" class="suggestions"></div>
+  </div>
+
+  <script>
+    const wordsJSON = {
+    "A": ["Apple", "Ant", "Anchor", "Arcade", "Arrow", "Airport", "Artist", "Atlas", "Amber", "Adapt", "Alarm", "Angle", "Alley", "Actual", "Asset", "Arena", "Affair", "Agree", "Avenue", "Award"],
+    "B": ["Ball", "Book", "Bench", "Brick", "Bottle", "Bridge", "Bread", "Board", "Block", "Brush", "Budget", "Blend", "Break", "Burst", "Balance", "Badge", "Battle", "Benefit", "Banner", "Blink"],
+    "C": ["Cat", "Chair", "Chart", "Clock", "Cloud", "Cream", "Candle", "Card", "Cycle", "Candy", "Crane", "Course", "Comic", "Cabin", "Climb", "Claim", "Crack", "Coast", "Calm", "Craft"],
+    "D": ["Dog", "Desk", "Drill", "Dance", "Drive", "Drop", "Drift", "Dream", "Drum", "Doubt", "Diner", "Draft", "Delay", "Daisy", "Ditch", "Daily", "Drama", "Drape", "Dose", "Dwell"],
+    "E": ["Egg", "Echo", "Eagle", "Engine", "Earth", "Exit", "Elite", "Elbow", "Exact", "Erode", "Event", "Enjoy", "Eject", "Equal", "Entry", "Essay", "Error", "Equip", "Eager", "Extend"],
+    "F": ["Fan", "Fish", "Flame", "Frame", "Field", "Fruit", "Fame", "Fact", "Flesh", "Ferry", "Flash", "Flock", "Float", "Forge", "Front", "Fault", "Faint", "Fence", "Final", "Feast"],
+    "G": ["Goat", "Gold", "Glass", "Grain", "Ghost", "Glove", "Glide", "Guest", "Grade", "Grill", "Groan", "Grant", "Grasp", "Greet", "Guide", "Gloom", "Giant", "Grove", "Groom", "Glare"],
+    "H": ["Hat", "Hill", "Horse", "House", "Hinge", "Hatch", "Hover", "Happy", "Heavy", "Hurry", "Hoard", "Hobby", "Harsh", "Human", "Heard", "Heart", "Hollow", "Helix", "Hound", "Haste"],
+    "I": ["Ice", "Iron", "Idea", "Inch", "Igloo", "Input", "Index", "Issue", "Item", "Image", "Ideal", "Inner", "Ivory", "Infer", "Inlet", "Intro", "Incite", "Invite", "Impact", "Infant"],
+    "J": ["Jam", "Joke", "Jump", "Jury", "Jade", "Jeep", "Joint", "Jolly", "Judge", "Jewel", "Joust", "Jiffy", "Jelly", "Journal", "Jaguar", "Jacket", "Jingle", "Jargon", "Jungle", "Justice"],
+    "K": ["Key", "King", "Kite", "Kick", "Knee", "Knife", "Knock", "Knot", "Kid", "Kiosk", "Kernel", "Kindle", "Keep", "Killer", "Knack", "Kettle", "Known", "Krill", "Kidney", "Kudos"],
+    "L": ["Lamp", "Leaf", "Lace", "Land", "Luck", "Lemon", "List", "Loop", "Lift", "Lawn", "Limit", "Ledge", "Level", "Learn", "Laser", "Loyal", "Light", "Lunar", "Ladle", "Label"],
+    "M": ["Map", "Moon", "Milk", "Mint", "Mine", "Mark", "Maze", "Mouse", "Match", "Mix", "Mild", "Melt", "Moss", "Moist", "Magic", "Mule", "Mount", "Model", "Mimic", "Metal"],
+    "N": ["Net", "Nose", "Nail", "Nest", "Need", "Nerve", "Night", "Noise", "Noble", "Narrow", "Nudge", "Neon", "Nylon", "Nomad", "Ninth", "Novel", "Notch", "Niece", "Nifty", "Nurture"],
+    "O": ["Oak", "Oven", "Oil", "Open", "Orbit", "Oath", "Oxide", "Ocean", "Offer", "Often", "Outer", "Opera", "Owner", "Organ", "Order", "Onion", "Opal", "Outfit", "Omen", "Outlet"],
+    "P": ["Pen", "Pot", "Pan", "Pipe", "Plan", "Point", "Pond", "Pace", "Piano", "Plant", "Price", "Print", "Prism", "Plaza", "Pride", "Pixel", "Prime", "Proof", "Punch", "Plume"],
+    "Q": ["Quiz", "Queen", "Quick", "Quote", "Quilt", "Queue", "Quiet", "Quota", "Quest", "Quirk", "Quail", "Quake", "Quartz", "Quench", "Qualm", "Quint", "Quark", "Query", "Quarry", "Quiver"],
+    "R": ["Rat", "Rock", "Rope", "Rice", "Ring", "Road", "Rage", "Rain", "Room", "Rust", "Reach", "Radio", "Roast", "Rural", "Rinse", "Ruler", "Rally", "Ridge", "Rapid", "Raise"],
+    "S": ["Sun", "Sand", "Sock", "Spin", "Seal", "Shoe", "Snow", "Soup", "Star", "Stick", "Stone", "Slide", "Shell", "Spice", "Shore", "Storm", "Sleep", "Swing", "Slate", "Slope"],
+    "T": ["Top", "Tree", "Tent", "Tank", "Tire", "Tile", "Turn", "Team", "Time", "Talk", "Tool", "Tide", "Track", "Tame", "Torch", "Trade", "Trunk", "Trust", "Twist", "Trial"],
+    "U": ["Urge", "Unit", "User", "Undo", "Ugly", "Upper", "Urban", "Utter", "Usual", "Ultra", "Unite", "Uptake", "Update", "Unzip", "Useful", "Upland", "Urgent", "Uproot", "Uneven", "Unseen"],
+    "V": ["Vet", "Vase", "Vent", "Vest", "Vine", "View", "Vote", "Vault", "Vocal", "Valley", "Vivid", "Virus", "Vapor", "Vigil", "Vital", "Vixen", "Vogue", "Visit", "Verse", "Value"],
+    "W": ["Win", "Wall", "Wand", "Wave", "Warm", "Worm", "Wind", "Wash", "Wood", "West", "Weed", "Wife", "Wolf", "Wish", "Wool", "Wrist", "Widen", "Wagon", "Whale", "Witty"],
+    "X": ["Xray", "Xenon", "Xmas", "Xylem", "Xenial", "Xerox", "Xiphoid", "Xebec", "Xenogamy", "Xenolith", "Xenogeny", "Xenophile", "Xenocracy", "Xenotype", "Xenobiotic", "Xenocyst", "Xenotime", "Xenogram", "Xanthan", "Xylitol"],
+    "Y": ["Yarn", "Yawn", "Yard", "Yolk", "Yeti", "Youth", "Yield", "Yacht", "Yodel", "Yummy", "Yearn", "Yapper", "Yonder", "Yellow", "Yabber", "Yeoman", "Yanked", "Yuppie", "Yammer", "Yaffle"],
+    "Z": ["Zoo", "Zone", "Zinc", "Zest", "Zero", "Zoom", "Zebra", "Zippy", "Zodiac", "Zinger", "Zappy", "Zephyr", "Zipper", "Zodiacal", "Zygote", "Zymurgy", "Zillion", "Zircon", "Zealot", "Zookeeper"]
+  };
+  </script>
+
+  <script>
+    const textInput = document.getElementById("textInput");
+    const suggestionsBox = document.getElementById("suggestions");
+    let allWords = [];
+
+    Object.values(wordsJSON).forEach(arr =>
+      allWords.push(...arr.map(w => w.toLowerCase()))
+    );
+
+    textInput.addEventListener("input", () => {
+      const value = textInput.value.toLowerCase();
+      suggestionsBox.innerHTML = "";
+      if (!value) return;
+
+      const matches = allWords.filter(word => word.startsWith(value)).slice(0, 5);
+      matches.forEach(match => {
+        const div = document.createElement("div");
+        div.classList.add("suggestion");
+        div.textContent = match;
+        div.onclick = () => {
+          textInput.value = match;
+          suggestionsBox.innerHTML = "";
+        };
+        suggestionsBox.appendChild(div);
+      });
+    });
+  </script>
+</body>
+</html>
