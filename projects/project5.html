@@ -79,6 +79,25 @@
             margin: 0;
             font-size: 1rem;
         }
+        a#back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #00bcd4;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+            z-index: 10;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        a#back:hover {
+            background: #008c9e;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -86,7 +105,7 @@
     <header>
         <h1>Password Manager</h1>
         <nav>
-            <a href="../index.html#projects">Back to Portfolio</a>
+            <a id="back" href="../index.html#PasswordManager">Back to Portfolio</a>
         </nav>
     </header>
 
