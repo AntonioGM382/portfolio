@@ -139,8 +139,8 @@
         }
 
         .feature-list li::before {
-            content: "\f00c";
-            font-family: "Font Awesome 6 Free";
+            content: \"\f00c\";
+            font-family: \"Font Awesome 6 Free\";
             font-weight: 900;
             position: absolute;
             left: 0;
@@ -166,11 +166,11 @@
     </header>
 
     <section>
-        <h2><i class="fas fa-rocket"></i> Project Overview</h2>
-        <p>The Capacity Planning Tool (CPT) manages workforce distribution across hundreds of branches. It solves the critical challenge of maintaining a "Master Blueprint" of recurring shifts while allowing for "Live Schedule" modifications (sick leaves, swaps) without data corruption.</p>
+        <h2><i class=\"fas fa-rocket\"></i> Project Overview</h2>
+        <p>The Capacity Planning Tool (CPT) manages workforce distribution across hundreds of branches. It solves the critical challenge of maintaining a \"Master Blueprint\" of recurring shifts while allowing for \"Live Schedule\" modifications (sick leaves, swaps) without data corruption.</p>
         
         <h3>Key Features</h3>
-        <ul class="feature-list">
+        <ul class=\"feature-list\">
             <li><strong>Dual-Layer Scheduling:</strong> Separation of Master Templates and Live Instances.</li>
             <li><strong>Automated Conflict Detection:</strong> Real-time validation of vacation overlaps and shift illegalities.</li>
             <li><strong>Temporal Data Snapshots:</strong> Historical tracking for payroll and audit accuracy.</li>
@@ -180,7 +180,7 @@
     </section>
 
     <section>
-        <h2><i class="fas fa-sitemap"></i> Architecture Guide</h2>
+        <h2><i class=\"fas fa-sitemap\"></i> Architecture Guide</h2>
         <p>The system is designed as a modular monolith deployed within a secure containerized environment on AWS.</p>
         
         <pre>
@@ -200,20 +200,20 @@
                                      +------------------+
         </pre>
 
-        <div class="grid-2">
-            <div class="architecture-card">
+        <div class=\"grid-2\">
+            <div class=\"architecture-card\">
                 <h3>Frontend Architecture</h3>
                 <p>Built as a static SPA for maximum performance and security.</p>
-                <ul class="feature-list">
+                <ul class=\"feature-list\">
                     <li><strong>Provider Stack:</strong> AuthProvider > QueryClientProvider > UIProvider.</li>
                     <li><strong>State Management:</strong> Server-state via TanStack Query; UI-state via React Context.</li>
                     <li><strong>Token Storage:</strong> Secure HTTP-Only cookies with client-side memory fallback.</li>
                 </ul>
             </div>
-            <div class="architecture-card">
+            <div class=\"architecture-card\">
                 <h3>Backend Architecture</h3>
                 <p>Django-based REST API focusing on domain-driven logic.</p>
-                <ul class="feature-list">
+                <ul class=\"feature-list\">
                     <li><strong>Middleware:</strong> Custom Auth Middleware for enterprise SSO integration.</li>
                     <li><strong>Validation:</strong> DRF Serializers with deep business logic injection.</li>
                     <li><strong>Replication:</strong> Automated daily sync tasks for historical archiving.</li>
@@ -223,7 +223,7 @@
     </section>
 
     <section>
-        <h2><i class="fas fa-database"></i> Two-Table Shift Engine</h2>
+        <h2><i class=\"fas fa-database\"></i> Two-Table Shift Engine</h2>
         <p>This core logic ensures that changes to a specific day's shift do not affect the recurring template, and vice versa.</p>
         
         <table>
@@ -237,23 +237,23 @@
             <tbody>
                 <tr>
                     <td><code>master_shifts</code></td>
-                    <td>The "Blueprint" - defines recurring weekly patterns.</td>
+                    <td>The \"Blueprint\" - defines recurring weekly patterns.</td>
                     <td>Rare (Contractual changes)</td>
                 </tr>
                 <tr>
                     <td><code>live_shifts</code></td>
-                    <td>The "Instance" - handles daily reality and disruptions.</td>
+                    <td>The \"Instance\" - handles daily reality and disruptions.</td>
                     <td>High (Daily operations)</td>
                 </tr>
             </tbody>
         </table>
 
-        <p><strong>Replication Flow:</strong> A background worker generates <code>live_shifts</code> from <code>master_shifts</code> 180 days in advance. Any manual edit to a <code>live_shift</code> flags it as "detached" to prevent override during blueprint updates.</p>
+        <p><strong>Replication Flow:</strong> A background worker generates <code>live_shifts</code> from <code>master_shifts</code> 180 days in advance. Any manual edit to a <code>live_shift</code> flags it as \"detached\" to prevent override during blueprint updates.</p>
     </section>
 
     <section>
-        <h2><i class="fas fa-chart-line"></i> Performance Comparison</h2>
-        <p>Comparison against the legacy "Sultan Analytics" Excel-based reporting system.</p>
+        <h2><i class=\"fas fa-chart-line\"></i> Performance Comparison</h2>
+        <p>Comparison against the legacy \"Sultan Analytics\" Excel-based reporting system.</p>
         
         <table>
             <thead>
@@ -283,30 +283,8 @@
         </table>
     </section>
 
-    <section>
-        <h2><i class="fas fa-tools"></i> Development & Deployment</h2>
-        <div class="grid-2">
-            <div>
-                <h3>Local Setup</h3>
-                <pre>
-# Clone and Install
-git clone https://github.com/...
-npm install && pip install -r requirements.txt
-
-# Start Development
-npm run dev
-python manage.py runserver
-                </pre>
-            </div>
-            <div>
-                <h3>Deployment</h3>
-                <p>The application is built into a single Docker image. The Next.js frontend is exported to static files and served by WhiteNoise alongside the Django API, ensuring atomic deployments and zero-downtime rollouts via AWS ECS.</p>
-            </div>
-        </div>
-    </section>
-
     <footer>
-        <a href="../index.html#initiatives" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portfolio Overview</a>
+        <a href=\"../index.html#initiatives\" class=\"back-btn\"><i class=\"fas fa-arrow-left\"></i> Back to Portfolio Overview</a>
     </footer>
 </div>
 
