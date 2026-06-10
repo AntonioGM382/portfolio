@@ -16,6 +16,7 @@
             --border-color: rgba(255, 255, 255, 0.1);
             --glass-bg: rgba(255, 255, 255, 0.02);
             --neon-blue: #00eaff;
+            --neon-orange: #ff9800;
         }
 
         * { box-sizing: border-box; }
@@ -214,6 +215,49 @@
             margin-bottom: 2px;
         }
 
+        /* Flow Diagram Styles */
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+        }
+
+        .flow-node {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .node-client { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 234, 255, 0.05); }
+        .node-security { border-color: var(--neon-orange); color: var(--neon-orange); background: rgba(255, 152, 0, 0.05); }
+        .node-server { border-color: var(--accent-color); color: var(--accent-color); background: rgba(0, 188, 212, 0.05); }
+        .node-storage { border-color: #fff; color: #fff; background: rgba(255, 255, 255, 0.05); }
+
+        .flow-arrow {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.3);
+            line-height: 1;
+        }
+
+        .node-subtext {
+            display: block;
+            font-weight: 400;
+            font-size: 0.65rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
         .dashboard-footer {
             padding: 15px 40px;
             border-top: 1px solid var(--border-color);
@@ -346,6 +390,29 @@ FUNCTION get_parity(date):
                     <li><strong>Operational Efficiency:</strong> Reduced the shift-planning overhead for branch managers from 4 hours/week to under 15 minutes.</li>
                     <li><strong>Market Scalability:</strong> Engineered the 6-month look-ahead engine to support the enterprise's expansion into 3 new regional markets.</li>
                 </ul>
+
+                <!-- DATA FLOW DIAGRAM -->
+                <div class="flow-diagram">
+                    <div class="flow-node node-client">
+                        CLIENT LAYER
+                        <span class="node-subtext">Next.js 16 SPA | Axios | localStorage (cp_auth_token)</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-node node-security">
+                        SECURITY & GATEWAY
+                        <span class="node-subtext">Gunicorn | JWT HS256 Validation</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-node node-server">
+                        BACKEND CORE
+                        <span class="node-subtext">Django 6 | Dual-Layer Engine | Replication Pipeline</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-down"></i></div>
+                    <div class="flow-node node-storage">
+                        PERSISTENCE & AUTH
+                        <span class="node-subtext">MySQL 8.4 (InnoDB) | Google OAuth 2.0 API</span>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
