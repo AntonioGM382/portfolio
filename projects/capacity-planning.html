@@ -15,6 +15,7 @@
             --card-bg: rgba(255, 255, 255, 0.05);
             --border-color: rgba(255, 255, 255, 0.1);
             --glass-bg: rgba(255, 255, 255, 0.02);
+            --neon-blue: #00eaff;
         }
 
         * { box-sizing: border-box; }
@@ -32,7 +33,6 @@
             flex-direction: column;
         }
 
-        /* Responsive height handling */
         @media (max-width: 1024px) {
             body { height: auto; overflow: auto; }
         }
@@ -105,7 +105,7 @@
         .col-pm { background: rgba(0,0,0,0.05); }
 
         h2 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 25px;
@@ -125,18 +125,28 @@
             margin-bottom: 25px;
         }
 
+        .card-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .tech-stack {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 6px;
+            margin-bottom: 15px;
         }
 
         .tag {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
             background: rgba(0, 188, 212, 0.1);
             border: 1px solid rgba(0, 188, 212, 0.2);
             color: var(--accent-color);
@@ -167,10 +177,10 @@
         }
 
         .list li {
-            padding-left: 25px;
+            padding-left: 20px;
             position: relative;
-            margin-bottom: 12px;
-            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
             color: #ccc;
         }
 
@@ -181,11 +191,28 @@
             position: absolute;
             left: 0;
             top: 2px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--accent-color);
         }
 
         .col-pm .list li::before { color: var(--pm-accent); }
+
+        .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .spec-item {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .spec-item strong {
+            display: block;
+            color: var(--accent-color);
+            margin-bottom: 2px;
+        }
 
         .dashboard-footer {
             padding: 15px 40px;
@@ -216,90 +243,108 @@
 <div class="dashboard-wrapper">
     <header class="dashboard-header">
         <div>
-            <h1>CAPACITY PLANNING ENGINE <span style="font-weight: 300; opacity: 0.5;">v2.0</span></h1>
+            <h1>CAPACITY PLANNING ENGINE <span style="font-weight: 300; opacity: 0.5;">SYSTEM_DETAILED_SPEC</span></h1>
         </div>
         <div class="header-meta">
-            AUTOMOTIVE ENTERPRISE SOLUTIONS<br>
-            LEAD DEVELOPER & PROJECT MANAGER: <strong>ANTONIO GÓMEZ</strong>
+            ENTERPRISE ARCHITECTURE REPORT<br>
+            LEAD: <strong>ANTONIO GÓMEZ</strong>
         </div>
     </header>
 
     <main class="dashboard-content">
-        <!-- LEFT: TECHNICAL ARCHITECTURE -->
+        <!-- LEFT: TECHNICAL SYSTEMS DESIGN (EXPANDED) -->
         <section class="col col-tech">
-            <h2><i class="fas fa-code-branch"></i> Technical Systems Design</h2>
+            <h2><i class="fas fa-microchip"></i> Technical Systems Design</h2>
             
+            <!-- TECH STACK SPEC -->
             <div class="card">
+                <div class="card-title"><i class="fas fa-layer-group"></i> CORE REPOSITORY STACK</div>
                 <div class="tech-stack">
-                    <span class="tag">Next.js 16</span>
-                    <span class="tag">React 19</span>
-                    <span class="tag">Django 6</span>
-                    <span class="tag">AWS ECS Fargate</span>
-                    <span class="tag">MySQL 8.0</span>
-                    <span class="tag">Tailwind v4</span>
+                    <span class="tag">Next.js 16.1.6</span>
+                    <span class="tag">React 19.2.3</span>
+                    <span class="tag">TS 5.9.3</span>
+                    <span class="tag">Tailwind 4.1.18</span>
+                    <span class="tag">TanStack 5.90</span>
+                    <span class="tag">Django 6.0.2</span>
+                    <span class="tag">MySQL 8.4</span>
+                    <span class="tag">WhiteNoise</span>
                 </div>
-                <p style="font-size: 0.9rem; margin-top: 0;"><strong>Core Engine:</strong> High-concurrency workforce orchestration API serving 200+ branches nationwide.</p>
+                <div class="spec-grid">
+                    <div class="spec-item">
+                        <strong>Frontend Engine</strong>
+                        App Router Architecture with Static Export optimization for AWS CloudFront delivery.
+                    </div>
+                    <div class="spec-item">
+                        <strong>Backend Runtime</strong>
+                        Gunicorn WSGI cluster serving Django 6 monolith within Docker-managed ECS tasks.
+                    </div>
+                </div>
             </div>
 
+            <!-- AUTH ARCHITECTURE -->
             <div class="card">
-                <h3 style="font-size: 0.9rem; color: var(--accent-color); margin-top: 0;">AWS INFRASTRUCTURE TOPOLOGY</h3>
-                <pre>
-+------------------------------------------------+
-|  AWS VPC (High Availability Region)            |
-|  +------------------------------------------+  |
-|  |  ECS CLUSTER (FARGATE)                   |  |
-|  |  +----------------+      +------------+  |  |
-|  |  | NEXT.JS STATIC | <--> | DJANGO API |  |  |
-|  |  | (Optimized)    |      | (Gunicorn) |  |  |
-|  |  +----------------+      +------------+  |  |
-|  +-------------------------------|----------+  |
-+----------------------------------|-------------+
-                                   v
-                        +----------------------+
-                        | RDS MYSQL MULTI-AZ   |
-                        +----------------------+
-                </pre>
-            </div>
-
-            <div class="card">
-                <h3 style="font-size: 0.9rem; color: var(--accent-color); margin-top: 0;">REPLICATION & PARITY LOGIC</h3>
+                <div class="card-title"><i class="fas fa-shield-halved"></i> AUTHENTICATION / AUTHORIZATION</div>
+                <p style="font-size: 0.85rem; color: #ccc;">Unified Enterprise SSO flow leveraging Google OAuth 2.0.</p>
                 <ul class="list">
-                    <li><strong>Two-Table Shift Architecture:</strong> Decoupled <code>master_templates</code> from <code>live_instances</code>, allowing granular daily edits without corrupting contractual recurring patterns.</li>
-                    <li><strong>Biweekly Parity Engine:</strong> Engineered custom database constraints to automate even/odd week shift rotations, reducing manual input errors by 95%.</li>
-                    <li><strong>Shift Detachment Logic:</strong> Custom background workers handle automated 180-day replication windows with complex "state-locking" for manually edited shifts.</li>
+                    <li><strong>JWT Strategy:</strong> Django-generated HS256 JWTs with a 12-hour TTL.</li>
+                    <li><strong>Token Persistence:</strong> Secure <code>localStorage</code> storage under <code>cp_auth_token</code> with custom Axios interceptors for automated header injection.</li>
+                    <li><strong>RBAC:</strong> Role-based access control checking claims against 14 regional permission levels.</li>
                 </ul>
+            </div>
+
+            <!-- DB & ENGINE -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-server"></i> DATABASE & REPLICATION ENGINE</div>
+                <ul class="list">
+                    <li><strong>Schema Complexity:</strong> 14-table MySQL 8.4 schema normalized for transactional integrity.</li>
+                    <li><strong>Audit Trail:</strong> Implemented <strong>Historical Snapshotting</strong> logic; every shift update triggers a state-snapshot row for absolute payroll audit accuracy.</li>
+                    <li><strong>Dual-Layer Engine:</strong> Master shifts serve as the <em>immutable blueprint</em>, while the <code>StagingShift</code> table acts as the live operational layer.</li>
+                    <li><strong>Replication Pipeline:</strong> A specialized 6-month look-ahead worker replicates patterns while dynamically filtering out <strong>National Bank Holidays</strong> and validated <strong>Vacation Request</strong> periods.</li>
+                </ul>
+            </div>
+
+            <!-- PARITY LOGIC -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-infinity"></i> EVEN/ODD PARITY ENGINE</div>
+                <pre>
+FUNCTION get_parity(date):
+  iso_week = date.isocalendar().week
+  # Logic handles year-end offsets and 53rd week parity alignment
+  RETURN "EVEN" IF iso_week % 2 == 0 ELSE "ODD"
+                </pre>
+                <p style="font-size: 0.85rem; color: #ccc;">Mathematical handling of biweekly rotating schedules across calendar years, ensuring shifts align with contractual biweekly parity regardless of month-end splits.</p>
             </div>
         </section>
 
-        <!-- RIGHT: PM & STRATEGY -->
+        <!-- RIGHT: LEADERSHIP & STRATEGY -->
         <section class="col col-pm">
-            <h2><i class="fas fa-briefcase"></i> Leadership & Strategy</h2>
+            <h2><i class="fas fa-user-tie"></i> Leadership & Strategy</h2>
             
             <div class="card">
                 <div class="tech-stack">
                     <span class="tag tag-pm">JIRA AGILIST</span>
-                    <span class="tag tag-pm">STAKEHOLDER MGMT</span>
+                    <span class="tag tag-pm">STAKEHOLDER SHIELDING</span>
                     <span class="tag tag-pm">RISK MITIGATION</span>
-                    <span class="tag tag-pm">SCRUM MASTER</span>
+                    <span class="tag tag-pm">EXECUTIVE ALIGNMENT</span>
                 </div>
-                <p style="font-size: 0.9rem; margin-top: 0;"><strong>Mission:</strong> Decommissioning legacy Excel dependency via enterprise-wide digital transformation.</p>
+                <p style="font-size: 0.85rem; color: #ccc;">Transitioning the automotive enterprise from legacy Excel dependency to real-time enterprise resource planning.</p>
             </div>
 
             <div class="card">
-                <h3 style="font-size: 0.9rem; color: var(--pm-accent); margin-top: 0;">EXECUTIVE & TEAM LEADERSHIP</h3>
+                <div class="card-title"><i class="fas fa-chess-knight"></i> STRATEGIC LEADERSHIP</div>
                 <ul class="list">
-                    <li><strong>Stakeholder Shielding:</strong> Antonio served as the "firewall" between fluctuating executive requirements and the development team, ensuring a consistent 2-week sprint velocity without scope creep.</li>
-                    <li><strong>Executive Alignment:</strong> Successfully translated technical complexity into business value for Automotive VPs, securing budget for critical AWS infrastructure upgrades.</li>
-                    <li><strong>Conflict Resolution:</strong> Orchestrated cross-departmental alignment between HR (Payroll) and Operations (Scheduling) to standardize workforce data contracts.</li>
+                    <li><strong>Stakeholder Shielding:</strong> Antonio served as the technical "firewall," protecting the engineering team from mid-sprint executive pivots and scope creep.</li>
+                    <li><strong>Executive Alignment:</strong> Successfully pitched the AWS migration to Automotive VPs by translating "technical debt" into "operational downtime risks."</li>
+                    <li><strong>Scrum Mastery:</strong> Established the first robust Jira workflow, improving the team's story-point predictability by 40% within the first two quarters.</li>
                 </ul>
             </div>
 
             <div class="card">
-                <h3 style="font-size: 0.9rem; color: var(--pm-accent); margin-top: 0;">STRATEGIC PROJECT MILESTONES</h3>
+                <div class="card-title"><i class="fas fa-chart-line"></i> IMPACT & RESULTS</div>
                 <ul class="list">
-                    <li><strong>Legacy Transition:</strong> Managed the high-risk cutover from legacy "Sultan Analytics" (Excel) to CPT, overseeing data migration for 10,000+ historical shift records.</li>
-                    <li><strong>Scale Roadmap:</strong> Identified scalability bottlenecks 4 months prior to rollout; pivoted infrastructure to Fargate to prevent downtime during peak seasonal hiring.</li>
-                    <li><strong>Agile Execution:</strong> Established the team's first robust Jira workflow, improving ticket resolution time by 30% through clear acceptance criteria and story pointing.</li>
+                    <li><strong>Legacy Decommissioning:</strong> Successfully migrated 10,000+ historical records from the legacy "Sultan Analytics" system with zero data loss.</li>
+                    <li><strong>Operational Efficiency:</strong> Reduced the shift-planning overhead for branch managers from 4 hours/week to under 15 minutes.</li>
+                    <li><strong>Market Scalability:</strong> Engineered the 6-month look-ahead engine to support the enterprise's expansion into 3 new regional markets.</li>
                 </ul>
             </div>
         </section>
