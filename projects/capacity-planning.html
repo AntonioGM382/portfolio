@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capacity Planning Tool - Antonio Gómez</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .details-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #00bcd4;
+            color: #eee;
+        }
+        .details-container h1 {
+            color: #00bcd4;
+            margin-bottom: 20px;
+        }
+        .spec-item {
+            margin-bottom: 30px;
+        }
+        .spec-item h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .spec-item p {
+            line-height: 1.6;
+            color: #ccc;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: #00bcd4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="background: #121212; font-family: 'Open Sans', sans-serif; color: #fff;">
+    <div class="container">
+        <div class="details-container">
+            <h1>Capacity Planning Tool</h1>
+            <p style="font-size: 1.1rem; margin-bottom: 40px;">Workforce scheduling platform built for Auto1 Group to replace legacy systems.</p>
+
+            <div class="spec-item">
+                <h2><i class="fas fa-microchip"></i> System Architecture</h2>
+                <p>High-performance static SPA (Next.js 16, React 19, Tailwind v4, TanStack Query) backed by a robust Django 6 & MySQL monolith deployed via AWS ECS Fargate.</p>
+            </div>
+
+            <div class="spec-item">
+                <h2><i class="fas fa-layer-group"></i> Dual-Layer Engine</h2>
+                <p>Generates 6 months of live schedules dynamically from master shift blueprints, safely handling daily disruptions (sick leave, branch swaps) without erasing recurring patterns.</p>
+            </div>
+
+            <div class="spec-item">
+                <h2><i class="fas fa-shield-alt"></i> Enterprise Features</h2>
+                <p>Real-time multi-country RBAC permissions, complex biweekly even/odd week parity logic, and automated vacation approval workflows that auto-prevent shift conflicts.</p>
+            </div>
+
+            <a href="../index.html#initiatives" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+        </div>
+    </div>
+</body>
+</html>
