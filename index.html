@@ -7,6 +7,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@300;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .skill-icon-container {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .skill-icon-container i {
+            font-size: 5rem;
+            color: #00bcd4;
+            filter: drop-shadow(0 0 10px rgba(0, 188, 212, 0.5));
+        }
+    </style>
 </head>
 <body>
 
@@ -108,8 +124,7 @@
                         </div>
                         <div class="skill-info">
                             <h3>JPAINFSV</h3>
-                            <p>Windows service for automated error detection in eGestion3 and system resource monitoring.</p>
-                            <a href="https://github.com/AntonioGM382/JPAINFSV" class="btn">Source Code</a>
+                            <p>Reliable Windows service for automated error detection in eGestion3 and system resource monitoring.</p>
                         </div>
                     </div>
                     <div class="skill-card" id="JPAInf_OCR">
@@ -118,8 +133,7 @@
                         </div>
                         <div class="skill-info">
                             <h3>JPAInf OCR</h3>
-                            <p>PDF text extraction tool leveraging Azure Computer Vision to process multiple documents into TXT.</p>
-                            <a href="https://github.com/AntonioGM382/JPAInf_OCR" class="btn">Source Code</a>
+                            <p>Efficient PDF text extraction tool leveraging Azure Computer Vision to process multiple documents into TXT.</p>
                         </div>
                     </div>
                     <div class="skill-card" id="QueryGPT">
@@ -128,8 +142,7 @@
                         </div>
                         <div class="skill-info">
                             <h3>QueryGPT</h3>
-                            <p>Custom-trained chatbot implementation using ChatGPT embeddings for specialized data queries.</p>
-                            <a href="https://github.com/AntonioGM382/QueryGPT" class="btn">Source Code</a>
+                            <p>Advanced custom-trained chatbot implementation using ChatGPT embeddings for specialized data queries.</p>
                         </div>
                     </div>
                 </div>
@@ -215,7 +228,7 @@
         }
     });
     
-    // 🚀 Accordion behavior + clean scroll
+    // \ud83d\ude80 Accordion behavior + clean scroll
     document.querySelectorAll('details.dropdown').forEach((dropdown, index, allDropdowns) => {
     dropdown.addEventListener('toggle', () => {
         if (dropdown.open) {
@@ -229,7 +242,7 @@
             const summary = dropdown.querySelector('summary');
             summary.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            // ✨ Animate cards one by one
+            // \u2728 Animate cards one by one
             const cards = dropdown.querySelectorAll('.project-card, .skill-card');
             cards.forEach((card, i) => {
                 card.style.transition = 'none'; // Reset transition temporarily
