@@ -15,12 +15,9 @@ body {
     color: #fff;
     line-height: 1.6;
     overflow-x: hidden;
+    opacity: 1; /* Fixed: forced opacity to 1 to prevent black screen issue */
 }
-body {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-  
+
 a {
     color: #00bcd4;
     text-decoration: none;
@@ -319,7 +316,6 @@ details[open] .project-card,
 details[open] .skill-card {
     opacity: 1;
     transform: translateY(0);
-    /* 🚫 NO animation here! Only transition handles the movement */
 }
 
 /* On Hover: only box-shadow, no animation */
