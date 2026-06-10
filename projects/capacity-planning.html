@@ -10,76 +10,142 @@
     <style>
         :root {
             --accent-color: #00bcd4;
+            --pm-accent: #ff9800;
             --bg-dark: #0f2027;
             --card-bg: rgba(255, 255, 255, 0.05);
             --border-color: rgba(255, 255, 255, 0.1);
-            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-bg: rgba(255, 255, 255, 0.02);
         }
+
+        * { box-sizing: border-box; }
 
         body {
             background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
             font-family: 'Open Sans', sans-serif;
             color: #eee;
-            line-height: 1.6;
-            padding: 20px;
-        }
-
-        .details-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 40px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            border-top: 1px solid var(--border-color);
-            backdrop-filter: blur(15px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-        }
-
-        h1, h2, h3 {
-            color: var(--accent-color);
-            margin-bottom: 15px;
-        }
-
-        h1 { font-size: 2.8rem; text-align: center; margin-bottom: 30px; }
-        h2 { font-size: 1.8rem; margin-top: 30px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
-        h3 { font-size: 1.3rem; color: #fff; margin-top: 25px; }
-
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 40px;
-            margin-top: 30px;
-        }
-
-        .column {
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 30px;
         }
 
-        .section-card {
-            background: var(--glass-bg);
-            padding: 25px;
-            border-radius: 12px;
+        /* Responsive height handling */
+        @media (max-width: 1024px) {
+            body { height: auto; overflow: auto; }
+        }
+
+        .dashboard-wrapper {
+            flex: 1;
+            width: 96%;
+            max-width: 1800px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            border-radius: 24px;
             border: 1px solid var(--border-color);
-            transition: transform 0.3s ease;
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
         }
 
-        .section-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.05);
+        @media (max-width: 1024px) {
+            .dashboard-wrapper { height: auto; overflow: visible; margin: 20px auto; width: 95%; }
         }
 
-        .tech-tag {
-            display: inline-block;
-            background: rgba(0, 188, 212, 0.15);
+        .dashboard-header {
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .dashboard-header h1 {
+            font-size: 1.8rem;
+            margin: 0;
             color: var(--accent-color);
-            padding: 4px 12px;
-            border-radius: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-meta {
+            text-align: right;
             font-size: 0.85rem;
-            font-weight: 600;
-            margin: 4px;
-            border: 1px solid rgba(0, 188, 212, 0.3);
+            color: #888;
+        }
+
+        .dashboard-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-content { grid-template-columns: 1fr; overflow: visible; }
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            padding: 30px 40px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        .col::-webkit-scrollbar { width: 6px; }
+        .col::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+
+        .col-tech { border-right: 1px solid var(--border-color); }
+        .col-pm { background: rgba(0,0,0,0.05); }
+
+        h2 {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .col-tech h2 { color: var(--accent-color); }
+        .col-pm h2 { color: var(--pm-accent); }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            background: rgba(0, 188, 212, 0.1);
+            border: 1px solid rgba(0, 188, 212, 0.2);
+            color: var(--accent-color);
+        }
+
+        .tag-pm {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.2);
+            color: var(--pm-accent);
         }
 
         pre {
@@ -87,141 +153,162 @@
             color: #00ffc3;
             padding: 15px;
             border-radius: 8px;
+            font-size: 0.75rem;
+            line-height: 1.2;
             overflow-x: auto;
-            font-size: 0.85rem;
+            margin: 15px 0;
             border: 1px solid var(--border-color);
         }
 
-        .feature-list {
+        .list {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
-        .feature-list li {
-            margin-bottom: 12px;
-            padding-left: 30px;
+        .list li {
+            padding-left: 25px;
             position: relative;
-            font-size: 0.95rem;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: #ccc;
         }
 
-        .feature-list li::before {
-            content: "\f058";
+        .list li::before {
+            content: "\f054";
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             position: absolute;
             left: 0;
+            top: 2px;
+            font-size: 0.7rem;
             color: var(--accent-color);
         }
 
-        .pm-list li::before {
-            content: "\f0e8";
-            color: #ff9800;
+        .col-pm .list li::before { color: var(--pm-accent); }
+
+        .dashboard-footer {
+            padding: 15px 40px;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
         }
 
-        .back-btn {
-            display: inline-flex;
+        .back-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            transition: color 0.3s;
+            display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 50px;
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s ease;
         }
 
-        .back-btn:hover {
-            color: #fff;
-            transform: translateX(-5px);
-        }
+        .back-link:hover { color: var(--accent-color); }
 
-        @media (max-width: 992px) {
-            .main-layout { grid-template-columns: 1fr; }
-            .details-container { padding: 25px; }
-            h1 { font-size: 2.2rem; }
-        }
+        strong { color: #fff; }
     </style>
 </head>
 <body>
 
-<div class="details-container">
-    <header style="text-align: center; margin-bottom: 40px;">
-        <h1>Capacity Planning Tool</h1>
-        <p style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; color: #ccc;">
-            Strategic workforce optimization platform engineered for a leading automotive enterprise.
-            Bridging the gap between executive strategy and daily operational reality.
-        </p>
+<div class="dashboard-wrapper">
+    <header class="dashboard-header">
+        <div>
+            <h1>CAPACITY PLANNING ENGINE <span style="font-weight: 300; opacity: 0.5;">v2.0</span></h1>
+        </div>
+        <div class="header-meta">
+            AUTOMOTIVE ENTERPRISE SOLUTIONS<br>
+            LEAD DEVELOPER & PROJECT MANAGER: <strong>ANTONIO GÓMEZ</strong>
+        </div>
     </header>
 
-    <div class="main-layout">
-        <!-- LEFT COLUMN: TECHNICAL DESIGN -->
-        <div class="column">
-            <div class="section-card">
-                <h2><i class="fas fa-microchip"></i> Architectural Excellence</h2>
-                <p>Designed as a resilient, containerized modular monolith to ensure extreme data consistency and high availability.</p>
-                <div style="margin: 15px 0;">
-                    <span class="tech-tag">Next.js 16</span>
-                    <span class="tech-tag">React 19</span>
-                    <span class="tech-tag">Django 6</span>
-                    <span class="tech-tag">AWS ECS Fargate</span>
-                    <span class="tech-tag">MySQL 8.0</span>
+    <main class="dashboard-content">
+        <!-- LEFT: TECHNICAL ARCHITECTURE -->
+        <section class="col col-tech">
+            <h2><i class="fas fa-code-branch"></i> Technical Systems Design</h2>
+            
+            <div class="card">
+                <div class="tech-stack">
+                    <span class="tag">Next.js 16</span>
+                    <span class="tag">React 19</span>
+                    <span class="tag">Django 6</span>
+                    <span class="tag">AWS ECS Fargate</span>
+                    <span class="tag">MySQL 8.0</span>
+                    <span class="tag">Tailwind v4</span>
                 </div>
+                <p style="font-size: 0.9rem; margin-top: 0;"><strong>Core Engine:</strong> High-concurrency workforce orchestration API serving 200+ branches nationwide.</p>
+            </div>
+
+            <div class="card">
+                <h3 style="font-size: 0.9rem; color: var(--accent-color); margin-top: 0;">AWS INFRASTRUCTURE TOPOLOGY</h3>
                 <pre>
-+------------------------------------------+
-|            AWS Cloud Infrastructure       |
-|  +------------------------------------+  |
-|  |       ECS Fargate Cluster          |  |
-|  |  +------------+      +----------+  |  |
-|  |  | Next.js SPA| <--> | Django   |  |  |
-|  |  | (Static)   |      | REST API |  |  |
-|  |  +------------+      +----------+  |  |
-|  +---------------------------|--------+  |
-+------------------------------|-----------+
-                               v
-                     +------------------+
-                     |  RDS MySQL (HA)  |
-                     +------------------+
++------------------------------------------------+
+|  AWS VPC (High Availability Region)            |
+|  +------------------------------------------+  |
+|  |  ECS CLUSTER (FARGATE)                   |  |
+|  |  +----------------+      +------------+  |  |
+|  |  | NEXT.JS STATIC | <--> | DJANGO API |  |  |
+|  |  | (Optimized)    |      | (Gunicorn) |  |  |
+|  |  +----------------+      +------------+  |  |
+|  +-------------------------------|----------+  |
++----------------------------------|-------------+
+                                   v
+                        +----------------------+
+                        | RDS MYSQL MULTI-AZ   |
+                        +----------------------+
                 </pre>
             </div>
 
-            <div class="section-card">
-                <h2><i class="fas fa-database"></i> The Shift Engine</h2>
-                <p>Engineered a complex Two-Table Replication system to solve the "Live-vs-Blueprint" dilemma.</p>
-                <ul class="feature-list">
-                    <li><strong>Biweekly Parity Logic:</strong> Database constraints handling rotating even/odd week contractual patterns.</li>
-                    <li><strong>Replication Engine:</strong> Automated background workers generating 180-day live windows from master blueprints.</li>
-                    <li><strong>Conflict Resolution:</strong> Custom PostgreSQL-inspired isolation levels at the application layer to prevent scheduling overlaps.</li>
+            <div class="card">
+                <h3 style="font-size: 0.9rem; color: var(--accent-color); margin-top: 0;">REPLICATION & PARITY LOGIC</h3>
+                <ul class="list">
+                    <li><strong>Two-Table Shift Architecture:</strong> Decoupled <code>master_templates</code> from <code>live_instances</code>, allowing granular daily edits without corrupting contractual recurring patterns.</li>
+                    <li><strong>Biweekly Parity Engine:</strong> Engineered custom database constraints to automate even/odd week shift rotations, reducing manual input errors by 95%.</li>
+                    <li><strong>Shift Detachment Logic:</strong> Custom background workers handle automated 180-day replication windows with complex "state-locking" for manually edited shifts.</li>
                 </ul>
             </div>
-        </div>
+        </section>
 
-        <!-- RIGHT COLUMN: PROJECT MANAGEMENT & LEADERSHIP -->
-        <div class="column">
-            <div class="section-card" style="border-left: 4px solid #ff9800;">
-                <h2 style="color: #ff9800;"><i class="fas fa-users-cog"></i> Strategic Leadership</h2>
-                <p>Beyond the code, Antonio spearheaded the project's lifecycle, managing expectations across multi-country stakeholders.</p>
-                <ul class="feature-list pm-list">
-                    <li><strong>Executive Alignment:</strong> Translated complex technical debt into business risk assessments for automotive VPs and branch managers.</li>
-                    <li><strong>Stakeholder Shielding:</strong> Antonio acted as the primary filter for fluctuating requirements, protecting the engineering team's focus and velocity during high-pressure sprints.</li>
-                    <li><strong>Agile Transformation:</strong> Implemented a Jira-driven Scrum framework that increased team predictability by 40% over three quarters.</li>
-                    <li><strong>Risk Mitigation:</strong> Identified critical scalability bottlenecks 3 months before the nationwide rollout, pivoting the infrastructure to AWS Fargate to handle 10x load.</li>
-                    <li><strong>Change Management:</strong> Orchestrated the decommissioning of legacy Excel systems, overseeing the training of 200+ branch managers on the new enterprise standard.</li>
+        <!-- RIGHT: PM & STRATEGY -->
+        <section class="col col-pm">
+            <h2><i class="fas fa-briefcase"></i> Leadership & Strategy</h2>
+            
+            <div class="card">
+                <div class="tech-stack">
+                    <span class="tag tag-pm">JIRA AGILIST</span>
+                    <span class="tag tag-pm">STAKEHOLDER MGMT</span>
+                    <span class="tag tag-pm">RISK MITIGATION</span>
+                    <span class="tag tag-pm">SCRUM MASTER</span>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 0;"><strong>Mission:</strong> Decommissioning legacy Excel dependency via enterprise-wide digital transformation.</p>
+            </div>
+
+            <div class="card">
+                <h3 style="font-size: 0.9rem; color: var(--pm-accent); margin-top: 0;">EXECUTIVE & TEAM LEADERSHIP</h3>
+                <ul class="list">
+                    <li><strong>Stakeholder Shielding:</strong> Antonio served as the "firewall" between fluctuating executive requirements and the development team, ensuring a consistent 2-week sprint velocity without scope creep.</li>
+                    <li><strong>Executive Alignment:</strong> Successfully translated technical complexity into business value for Automotive VPs, securing budget for critical AWS infrastructure upgrades.</li>
+                    <li><strong>Conflict Resolution:</strong> Orchestrated cross-departmental alignment between HR (Payroll) and Operations (Scheduling) to standardize workforce data contracts.</li>
                 </ul>
             </div>
 
-            <div class="section-card">
-                <h2><i class="fas fa-chart-line"></i> Market Alignment</h2>
-                <p>Ensured the tool wasn't just technically sound, but perfectly aligned with the enterprise's roadmap.</p>
-                <ul class="feature-list pm-list">
-                    <li><strong>Resource Planning:</strong> Negotiated budget allocations for infra scaling.</li>
-                    <li><strong>KPI Tracking:</strong> Monitored deployment success rates and user adoption metrics.</li>
-                    <li><strong>Visionary Strategy:</strong> Developed a 2-year feature roadmap focusing on AI-driven workforce predictions.</li>
+            <div class="card">
+                <h3 style="font-size: 0.9rem; color: var(--pm-accent); margin-top: 0;">STRATEGIC PROJECT MILESTONES</h3>
+                <ul class="list">
+                    <li><strong>Legacy Transition:</strong> Managed the high-risk cutover from legacy "Sultan Analytics" (Excel) to CPT, overseeing data migration for 10,000+ historical shift records.</li>
+                    <li><strong>Scale Roadmap:</strong> Identified scalability bottlenecks 4 months prior to rollout; pivoted infrastructure to Fargate to prevent downtime during peak seasonal hiring.</li>
+                    <li><strong>Agile Execution:</strong> Established the team's first robust Jira workflow, improving ticket resolution time by 30% through clear acceptance criteria and story pointing.</li>
                 </ul>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <footer style="text-align: center;">
-        <a href="../index.html#initiatives" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portfolio Overview</a>
+    <footer class="dashboard-footer">
+        <a href="../index.html#initiatives" class="back-link">
+            <i class="fas fa-chevron-left"></i> RETURN TO MAIN TERMINAL
+        </a>
     </footer>
 </div>
 
