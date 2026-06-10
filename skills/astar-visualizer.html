@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A* Pathfinding Visualizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --grid-color: #2c2c2c;
+            --wall-color: #444;
+            --start-color: #4caf50;
+            --end-color: #f44336;
+            --visited-color: rgba(0, 188, 212, 0.3);
+            --path-color: #ffeb3b;
+            --text-color: #eee;
+            --accent-color: #00bcd4;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #008c9e;
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        #grid {
+            display: grid;
+            background-color: var(--grid-color);
+            gap: 1px;
+            border: 1px solid var(--grid-color);
+            cursor: crosshair;
+        }
+
+        .node {
+            width: 25px;
+            height: 25px;
+            background-color: var(--bg-color);
+        }
+
+        .node.wall { background-color: var(--wall-color); }
+        .node.start { background-color: var(--start-color); }
+        .node.end { background-color: var(--end-color); }
+        .node.visited { background-color: var(--visited-color); animation: visitedAnimation 0.5s ease-out; }
+        .node.path { background-color: var(--path-color); animation: pathAnimation 0.5s ease-out; }
+
+        @keyframes visitedAnimation {
+            from { transform: scale(0.3); background-color: rgba(0, 188, 212, 0.7); border-radius: 50%; }
+            to { transform: scale(1); background-color: var(--visited-color); }
+        }
+
+        @keyframes pathAnimation {
+            from { transform: scale(0.6); background-color: #fff; }
+            to { transform: scale(1); background-color: var(--path-color); }
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html#skills" class="back-link">← Back to Portfolio</a>
+    <header>
+        <h1>A* Pathfinding Visualizer</h1>
+        <p>Click and drag to draw walls. Press Visualize to find the shortest path!</p>
+    </header>
+
+    <div class="controls">
+        <button id="visualizeBtn">Visualize A*</button>
+        <button id="clearBoardBtn">Clear Board</button>
+        <button id="clearPathBtn">Clear Path</button>
+    </div>
+
+    <div id="grid"></div>
+
+    <script>
+        const ROWS = 20;
+        const COLS = 40;
+        let startNode = { r: 10, c: 5 };
+        let endNode = { r: 10, c: 35 };
+        let grid = [];
+        let isMouseDown = false;
+        let running = false;
+
+        const gridElement = document.getElementById('grid');
+        gridElement.style.gridTemplateColumns = `repeat(${COLS}, 25px)`;
+
+        function createGrid() {
+            gridElement.innerHTML = '';
+            grid = [];
+            for (let r = 0; r < ROWS; r++) {
+                const row = [];
+                for (let c = 0; c < COLS; c++) {
+                    const node = document.createElement('div');
+                    node.className = 'node';
+                    node.id = `node-${r}-${c}`;
+                    
+                    if (r === startNode.r && c === startNode.c) node.classList.add('start');
+                    if (r === endNode.r && c === endNode.c) node.classList.add('end');
+
+                    node.onmousedown = () => {
+                        if (running) return;
+                        isMouseDown = true;
+                        toggleWall(r, c);
+                    };
+                    node.onmouseenter = () => {
+                        if (isMouseDown && !running) toggleWall(r, c);
+                    };
+                    node.onmouseup = () => isMouseDown = false;
+
+                    gridElement.appendChild(node);
+                    row.push({ r, c, wall: false, visited: false, parent: null, g: Infinity, h: Infinity, f: Infinity });
+                }
+                grid.push(row);
+            }
+        }
+
+        function toggleWall(r, c) {
+            if ((r === startNode.r && c === startNode.c) || (r === endNode.r && c === endNode.c)) return;
+            grid[r][c].wall = !grid[r][c].wall;
+            document.getElementById(`node-${r}-${c}`).classList.toggle('wall');
+        }
+
+        async function astar() {
+            if (running) return;
+            running = true;
+            clearPath(true);
+
+            const openSet = [];
+            const start = grid[startNode.r][startNode.c];
+            start.g = 0;
+            start.h = Math.abs(start.r - endNode.r) + Math.abs(start.c - endNode.c);
+            start.f = start.g + start.h;
+            openSet.push(start);
+
+            while (openSet.length > 0) {
+                openSet.sort((a, b) => a.f - b.f);
+                const current = openSet.shift();
+
+                if (current.r === endNode.r && current.c === endNode.c) {
+                    await drawPath(current);
+                    running = false;
+                    return;
+                }
+
+                current.visited = true;
+                if (!(current.r === startNode.r && current.c === startNode.c)) {
+                    document.getElementById(`node-${current.r}-${current.c}`).classList.add('visited');
+                    await new Promise(r => setTimeout(r, 10));
+                }
+
+                const neighbors = getNeighbors(current);
+                for (const neighbor of neighbors) {
+                    if (neighbor.wall || neighbor.visited) continue;
+                    
+                    const tentativeG = current.g + 1;
+                    if (tentativeG < neighbor.g) {
+                        neighbor.parent = current;
+                        neighbor.g = tentativeG;
+                        neighbor.h = Math.abs(neighbor.r - endNode.r) + Math.abs(neighbor.c - endNode.c);
+                        neighbor.f = neighbor.g + neighbor.h;
+                        if (!openSet.includes(neighbor)) openSet.push(neighbor);
+                    }
+                }
+            }
+            alert("No path found!");
+            running = false;
+        }
+
+        function getNeighbors(node) {
+            const res = [];
+            const { r, c } = node;
+            if (r > 0) res.push(grid[r - 1][c]);
+            if (r < ROWS - 1) res.push(grid[r + 1][c]);
+            if (c > 0) res.push(grid[r][c - 1]);
+            if (c < COLS - 1) res.push(grid[r][c + 1]);
+            return res;
+        }
+
+        async function drawPath(node) {
+            let curr = node;
+            while (curr.parent) {
+                if (!(curr.r === endNode.r && curr.c === endNode.c)) {
+                    document.getElementById(`node-${curr.r}-${curr.c}`).className = 'node path';
+                    await new Promise(r => setTimeout(r, 30));
+                }
+                curr = curr.parent;
+            }
+        }
+
+        function clearBoard() {
+            if (running) return;
+            createGrid();
+        }
+
+        function clearPath(keepWalls = false) {
+            if (running) return;
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    const node = grid[r][c];
+                    node.visited = false;
+                    node.parent = null;
+                    node.g = Infinity;
+                    node.h = Infinity;
+                    node.f = Infinity;
+                    const el = document.getElementById(`node-${r}-${c}`);
+                    el.classList.remove('visited', 'path');
+                    if (!keepWalls) {
+                        node.wall = false;
+                        el.classList.remove('wall');
+                    }
+                }
+            }
+        }
+
+        document.getElementById('visualizeBtn').onclick = astar;
+        document.getElementById('clearBoardBtn').onclick = clearBoard;
+        document.getElementById('clearPathBtn').onclick = () => clearPath(true);
+        window.onmouseup = () => isMouseDown = false;
+
+        createGrid();
+    </script>
+</body>
+</html>

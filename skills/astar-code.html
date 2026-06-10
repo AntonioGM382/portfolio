@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A* Source Code</title>
+    <style>
+        body { background: #1e1e1e; color: #d4d4d4; font-family: 'Consolas', monospace; padding: 20px; }
+        pre { white-space: pre-wrap; word-wrap: break-word; }
+        .back { color: #00bcd4; text-decoration: none; display: block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <a href="../index.html#skills" class="back">← Back</a>
+    <h1>A* Pathfinding Implementation (JavaScript)</h1>
+    <pre>
+async function astar() {
+    const openSet = [startNode];
+    startNode.g = 0;
+    startNode.f = heuristic(startNode, endNode);
+
+    while (openSet.length > 0) {
+        // Find node with lowest f score
+        openSet.sort((a, b) => a.f - b.f);
+        const current = openSet.shift();
+
+        if (current === endNode) return reconstructPath(current);
+
+        current.visited = true;
+        
+        for (const neighbor of getNeighbors(current)) {
+            if (neighbor.wall || neighbor.visited) continue;
+            
+            const tentativeG = current.g + 1;
+            if (tentativeG < neighbor.g) {
+                neighbor.parent = current;
+                neighbor.g = tentativeG;
+                neighbor.f = neighbor.g + heuristic(neighbor, endNode);
+                if (!openSet.includes(neighbor)) openSet.push(neighbor);
+            }
+        }
+    }
+}
+    </pre>
+</body>
+</html>
