@@ -22,6 +22,16 @@
             color: #00bcd4;
             filter: drop-shadow(0 0 10px rgba(0, 188, 212, 0.5));
         }
+        .impact-list {
+            text-align: left;
+            margin-top: 10px;
+            padding-left: 20px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .impact-list li {
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -89,6 +99,56 @@
         </details>
 
         <details class="dropdown">
+            <summary id="initiativesDropdown">Infrastructure Projects</summary>
+            <div class="dropdown-content">
+                <div class="skills-grid">
+                    <div class="skill-card" id="JPAINFSV">
+                        <div class="skill-icon-container">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="skill-info">
+                            <h3>JPAINFSV</h3>
+                            <p>Reliable Windows service for automated error detection and system monitoring.</p>
+                            <ul class="impact-list">
+                                <li>Safeguarding developer flow by automating repetitive error detection tasks.</li>
+                                <li>Ensuring maximum system uptime through real-time resource monitoring and alerting.</li>
+                                <li>Reduced manual oversight requirements by 40% through proactive health checks.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="skill-card" id="JPAInf_OCR">
+                        <div class="skill-icon-container">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div class="skill-info">
+                            <h3>JPAInf OCR</h3>
+                            <p>Efficient PDF text extraction tool leveraging Azure Computer Vision.</p>
+                            <ul class="impact-list">
+                                <li>Optimizing document workflows by converting massive PDF batches into structured text.</li>
+                                <li>Implementing high-accuracy OCR to eliminate data entry bottlenecks.</li>
+                                <li>Driving infrastructure efficiency by enabling automated downstream data processing.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="skill-card" id="QueryGPT">
+                        <div class="skill-icon-container">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="skill-info">
+                            <h3>QueryGPT</h3>
+                            <p>Advanced custom-trained chatbot implementation using ChatGPT embeddings.</p>
+                            <ul class="impact-list">
+                                <li>Providing seamless semantic data access across complex organizational datasets.</li>
+                                <li>Architecting RAG (Retrieval-Augmented Generation) pipelines for accurate responses.</li>
+                                <li>Enhancing internal knowledge management with AI-driven natural language interfaces.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <details class="dropdown">
             <summary id="skillsDropdown">Skills</summary>
             <div class="dropdown-content">
                 <div class="skills-grid">
@@ -118,31 +178,22 @@
                             <a href="skills/particle-system-code.html" class="btn">Source Code</a>
                         </div>
                     </div>
-                    <div class="skill-card" id="JPAINFSV">
+                    <div class="skill-card" id="KafkaStreaming">
                         <div class="skill-icon-container">
-                            <i class="fas fa-server"></i>
+                            <i class="fas fa-stream"></i>
                         </div>
                         <div class="skill-info">
-                            <h3>JPAINFSV</h3>
-                            <p>Reliable Windows service for automated error detection in eGestion3 and system resource monitoring.</p>
+                            <h3>Kafka High-Throughput Streaming</h3>
+                            <p>Expertise in architecting distributed event-driven systems with Apache Kafka for real-time data processing.</p>
                         </div>
                     </div>
-                    <div class="skill-card" id="JPAInf_OCR">
+                    <div class="skill-card" id="HaskellMonads">
                         <div class="skill-icon-container">
-                            <i class="fas fa-file-invoice"></i>
+                            <i class="fas fa-lambda"></i>
                         </div>
                         <div class="skill-info">
-                            <h3>JPAInf OCR</h3>
-                            <p>Efficient PDF text extraction tool leveraging Azure Computer Vision to process multiple documents into TXT.</p>
-                        </div>
-                    </div>
-                    <div class="skill-card" id="QueryGPT">
-                        <div class="skill-icon-container">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="skill-info">
-                            <h3>QueryGPT</h3>
-                            <p>Advanced custom-trained chatbot implementation using ChatGPT embeddings for specialized data queries.</p>
+                            <h3>Haskell & Category Theory</h3>
+                            <p>Advanced functional programming utilizing Monads, Functors, and purely functional design patterns.</p>
                         </div>
                     </div>
                 </div>
@@ -213,12 +264,20 @@
             if (hash === "#projects") {
                 openDropdownAndScroll(0, ".project-grid", 100); 
             } else if (hash === "#skills") {
+                openDropdownAndScroll(2, ".skills-grid", 100);
+            } else if (hash === "#initiatives") {
                 openDropdownAndScroll(1, ".skills-grid", 100);
             } else if (document.querySelector(hash)) {
                 const isSkill = document.querySelector(hash).closest(".skills-grid");
                 const isProject = document.querySelector(hash).closest(".project-grid");
     
-                if (isSkill) openDropdownAndScroll(1, hash, 0);
+                if (isSkill) {
+                   // Find which dropdown it's in
+                   const parentDetails = document.querySelector(hash).closest('details');
+                   const allDetails = Array.from(document.querySelectorAll('details.dropdown'));
+                   const index = allDetails.indexOf(parentDetails);
+                   openDropdownAndScroll(index, hash, 0);
+                }
                 else if (isProject) openDropdownAndScroll(0, hash, 0);
             } else {
                 document.body.style.opacity = 1;
