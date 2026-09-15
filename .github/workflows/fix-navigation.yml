@@ -1,0 +1,37 @@
+name: Fix portfolio navigation
+on:
+  push:
+    branches: [main]
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Normalize project back links and hash navigation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          for p in Path('projects').glob('*.html'):
+              s=p.read_text()
+              s=re.sub(r'(<a\\b[^>]*?href=["\'])[^"\']*(#[^"\']*)["\']([^>]*>)(?:\\s*)[^<]*(</a>)', r'\\1../index.html#initiativesDropdown\\3← Back to Projects\\4', s, flags=re.I)
+              p.write_text(s)
+          p=Path('index.html')
+          s=p.read_text()
+          marker='  <style>\\n    html { scroll-behavior: smooth; }\\n    #initiativesDropdown, #skills { scroll-margin-top: 100px; }\\n  </style>\\n'
+          if 'scroll-margin-top: 100px' not in s:
+              s=s.replace('</head>', marker+'</head>')
+          old="const target=document.getElementById(hash.slice(1));const details=target?.closest('details');if(!details)return;details.open=true;setTimeout(()=>target.scrollIntoView({behavior:'smooth',block:'start'}),150)"
+          new="const target=document.getElementById(hash.slice(1));if(!target)return;const details=target.matches('details')?target:target.closest('details');if(details){details.open=true;details.setAttribute('open','');}requestAnimationFrame(()=>requestAnimationFrame(()=>target.scrollIntoView({behavior:'smooth',block:'start'})))"
+          s=s.replace(old,new)
+          p.write_text(s)
+          PY
+          rm -f .github/workflows/fix-navigation.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "Normalize all project back links and hash scrolling" || exit 0
+          git push
