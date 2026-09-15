@@ -1,0 +1,40 @@
+name: Apply navigation fix
+on:
+  push:
+    branches: [main]
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix every project back link and hash navigation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          for path in Path('projects').glob('*.html'):
+              text = path.read_text()
+              text = re.sub(r'(<a\b[^>]*\bhref=["\'])[^"\']*(["\'][^>]*>)[\s\S]*?(?=</a>)', lambda m: m.group(1) + '../index.html#initiativesDropdown' + m.group(2) + '← Back to Projects', text, count=0)
+              text = re.sub(r'(<a\b[^>]*\bhref=["\'])[^"\']*(?:["\'])[^>]*>\s*(?:←\s*)?Back to[^<]*</a>', lambda m: m.group(0), text)
+              text = text.replace('Back to Portfolio', '← Back to Projects').replace('← ← Back to Projects', '← Back to Projects')
+              text = re.sub(r'(href=["\'])\.\./index\.html#[^"\']*(["\'])', r'\1../index.html#initiativesDropdown\2', text)
+              path.write_text(text)
+          path = Path('index.html')
+          text = path.read_text()
+          css = '  <style>\n    html { scroll-behavior: smooth; }\n    #initiativesDropdown, #skills { scroll-margin-top: 100px; }\n  </style>\n'
+          if 'scroll-margin-top: 100px' not in text:
+              text = text.replace('</head>', css + '</head>')
+          old = "const target=document.getElementById(hash.slice(1));const details=target?.closest('details');if(!details)return;details.open=true;setTimeout(()=>target.scrollIntoView({behavior:'smooth',block:'start'}),150)"
+          new = "const target=document.getElementById(hash.slice(1));if(!target)return;const details=target.matches('details')?target:target.closest('details');if(details){details.open=true;details.setAttribute('open','')}requestAnimationFrame(()=>requestAnimationFrame(()=>target.scrollIntoView({behavior:'smooth',block:'start'})))"
+          text = text.replace(old, new)
+          path.write_text(text)
+          PY
+          rm -f .github/workflows/fix-navigation.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "Fix all project back navigation and hash scrolling" || exit 0
+          git push
