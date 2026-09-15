@@ -70,23 +70,20 @@
 <section id="contact" class="section"><div class="container"><h2>Contact</h2><p>Feel free to reach out!</p><ul class="contact-info"><li>Email: <a href="mailto:antoniogomezmt11@gmail.com">antoniogomezmt11@gmail.com</a></li><li>LinkedIn: <a href="https://linkedin.com/in/antoniogomezmtnez" target="_blank">Antonio Gómez</a></li><li>GitHub: <a href="https://github.com/AntonioGM382" target="_blank">AntonioGM382</a></li></ul></div></section>
 <footer><div class="legal-section"><p>&copy; 2024 Antonio Gómez. All rights reserved.</p><nav class="legal-links"><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a> | <a href="cookies.html">Cookies Policy</a></nav></div></footer>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    try {
-      const hash = window.location.hash ? window.location.hash.slice(1) : null;
-      if (hash) {
-        const el = document.getElementById(hash);
-        if (el) {
-          const details = el.closest('details');
-          if (details) details.open = true;
-          setTimeout(() => {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 150);
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  });
+(function () {
+  "use strict";
+  function openForHash() {
+    var id = window.location.hash.slice(1);
+    if (!id) return;
+    var target = document.getElementById(id);
+    if (!target) return;
+    var details = target.closest("details.dropdown");
+    if (details) details.open = true;
+    setTimeout(function () { target.scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
+  }
+  document.addEventListener("DOMContentLoaded", openForHash);
+  window.addEventListener("hashchange", openForHash);
+}());
 </script>
 </body>
 </html>
