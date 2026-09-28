@@ -6,74 +6,59 @@
   <title>Snake Game</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
-    body { margin:0; font-family:'Roboto',sans-serif; background:#0f2027; color:#fff; display:flex; flex-direction:column; align-items:center; height:100vh; overflow:hidden; }
-    header { text-align:center; margin:20px 0 10px; }
-    #score { font-size:1.2rem; margin-bottom:10px; color:#00eaff; }
-    canvas { background:#fff; border:4px solid #00bcd4; border-radius:10px; image-rendering:pixelated; }
-    .game-over { position:absolute; top:50%; transform:translateY(-50%); font-size:2rem; color:#ff5252; text-align:center; display:none; }
-    #back { position:fixed; top:20px; left:20px; background:#00bcd4; padding:10px 16px; border-radius:6px; text-decoration:none; color:#fff; font-size:1rem; font-weight:500; z-index:10; transition:background .3s; }
-    #back:hover { background:#008c9e; }
-    .back a { color:#00bcd4; text-decoration:none; }
-    .back a:hover { color:#fff; }
-    #controls { display:flex; gap:10px; margin:12px; }
-    .control-button { background:#00bcd4; color:#fff; border:0; border-radius:6px; padding:10px 16px; font:700 1rem 'Roboto',sans-serif; cursor:pointer; }
-    .control-button:hover { background:#008c9e; }
-    .control-button[aria-pressed="true"] { background:#008c9e; box-shadow:0 0 0 2px #00eaff; }
-    @media(max-height:600px) { header { margin:8px 0 2px; } header h1 { margin:4px; } header p { margin:4px; } canvas { width:min(62vh,400px); height:min(62vh,400px); } }
+    :root{color-scheme:dark;--cyan:#70f3f5;--muted:#a8c7ce;--line:rgba(112,243,245,.28)}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:'Roboto',sans-serif;color:#eaffff;display:flex;flex-direction:column;align-items:center;overflow:auto;background:radial-gradient(ellipse at 50% 0,#174b59 0,transparent 48%),linear-gradient(145deg,#061116,#102d37)}
+    header{text-align:center;margin:20px 0 6px}header h1{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:.04em;margin:8px}header p{color:var(--muted);margin:6px}
+    #score{font-size:1.05rem;margin:8px 0 12px;color:var(--cyan);letter-spacing:.04em}
+    canvas{background:#081a20;border:1px solid var(--line);border-radius:16px;image-rendering:pixelated;box-shadow:0 0 0 5px #70f3f50b,0 18px 65px #0008,0 0 32px #31dbe522;max-width:min(90vw,400px);height:auto}
+    .game-over{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--cyan);text-align:center;display:none;padding:24px 34px;border:1px solid var(--line);border-radius:18px;background:#07151bea;box-shadow:0 0 40px #31dbe544;z-index:5}
+    .game-over small{font-size:.9rem;color:var(--muted)}#back{position:fixed;top:20px;left:20px;background:#0c7e8d;padding:10px 16px;border-radius:8px;text-decoration:none;color:#fff;font-size:1rem;z-index:10;transition:background .2s}#back:hover{background:#11606b}
+    #controls{display:flex;gap:10px;margin:14px}.control-button{background:linear-gradient(135deg,#0c7e8d,#145a68);color:#eaffff;border:1px solid #70f3f566;border-radius:9px;padding:10px 17px;font:700 1rem 'Roboto',sans-serif;cursor:pointer;transition:transform .15s,box-shadow .15s}.control-button:hover{transform:translateY(-1px);box-shadow:0 5px 18px #31dbe533}.control-button[aria-pressed="true"]{background:#167788;box-shadow:0 0 0 2px #70f3f5,0 0 20px #31dbe544}
+    #hint{font-size:.85rem;color:#91b1b9;margin:0 0 20px}.back a{color:#70f3f5;text-decoration:none}
+    @media(max-height:650px){header{margin:6px 0 0}header h1{margin:4px}header p{margin:4px}#score{margin:4px}canvas{max-width:min(66vh,400px)}#controls{margin:8px}}
   </style>
 </head>
 <body>
-  <header><h1>Snake Game</h1><p>Use arrow keys to play or enable Auto Play</p></header>
-  <div id="score">Score: 0</div>
-  <canvas id="game" width="400" height="400"></canvas>
+  <header><h1>Snake Game</h1><p>Arrow keys to play · switch on Auto Play to watch the AI</p></header>
+  <div id="score">Score: 0 <span aria-hidden="true">·</span> Apples: 3</div>
+  <canvas id="game" width="400" height="400" aria-label="Snake game board"></canvas>
   <div id="controls"><button class="control-button" id="autoPlay" type="button" aria-pressed="false">Auto Play: Off</button><button class="control-button" id="restart" type="button">Restart</button></div>
-  <div class="game-over" id="gameOver">Game Over<br/><small>Press R to Restart</small></div>
+  <p id="hint">Eat apples, avoid your body and the walls.</p>
+  <div class="game-over" id="gameOver">Game Over<br/><small>Press R to restart</small></div>
   <div class="back"><a id="back" href="../index.html#skills">← Back to Skills</a></div>
   <script>
-    const canvas=document.getElementById('game'), ctx=canvas.getContext('2d'), scale=20;
-    const rows=canvas.height/scale, cols=canvas.width/scale;
-    let snake, fruit, score=0, running=false, moved=false, autoPlay=false;
-    class Snake {
-      constructor(){ this.body=[{x:scale*3,y:scale*5},{x:scale*4,y:scale*5},{x:scale*5,y:scale*5}]; this.xSpeed=0; this.ySpeed=0; this.growing=false; }
-      update(){ const head={...this.body[this.body.length-1]}; head.x+=this.xSpeed; head.y+=this.ySpeed; this.body.push(head); if(this.growing)this.growing=false;else this.body.shift(); moved=true; }
-      draw(){ for(let i=0;i<this.body.length;i++){ctx.fillStyle=i===this.body.length-1?'#00eaff':'#4dd0e1';ctx.fillRect(this.body[i].x,this.body[i].y,scale-2,scale-2);} }
-      changeDirection(dir){
-        const directions={Up:[0,-scale],Down:[0,scale],Left:[-scale,0],Right:[scale,0]}, [dx,dy]=directions[dir];
-        if(dx===-this.xSpeed&&dy===-this.ySpeed)return;
-        this.xSpeed=dx;this.ySpeed=dy;
-      }
-      eat(target){const head=this.body[this.body.length-1];if(head.x===target.x&&head.y===target.y){this.growing=true;return true;}return false;}
-      hasCollision(){const head=this.body[this.body.length-1];if(head.x<0||head.x>=canvas.width||head.y<0||head.y>=canvas.height)return true;return this.body.slice(0,-1).some(seg=>seg.x===head.x&&seg.y===head.y);}
+    const canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),scale=20,rows=canvas.height/scale,cols=canvas.width/scale,APPLE_COUNT=3,TICK_MS=110;
+    let snake,apples,score=0,running=false,moved=false,autoPlay=false;
+    class Snake{
+      constructor(){this.body=[{x:scale*3,y:scale*5},{x:scale*4,y:scale*5},{x:scale*5,y:scale*5}];this.xSpeed=0;this.ySpeed=0;this.growing=false;}
+      update(){const head={...this.body[this.body.length-1]};head.x+=this.xSpeed;head.y+=this.ySpeed;this.body.push(head);if(this.growing)this.growing=false;else this.body.shift();moved=true;}
+      draw(){this.body.forEach((p,i)=>{const t=i/(this.body.length-1||1);ctx.fillStyle=i===this.body.length-1?'#b6ffff':`hsl(${187-t*15} 72% ${54-t*12}%)`;ctx.shadowColor=i===this.body.length-1?'#70f3f5':'transparent';ctx.shadowBlur=i===this.body.length-1?13:0;ctx.beginPath();ctx.roundRect(p.x+2,p.y+2,scale-4,scale-4,6);ctx.fill();});ctx.shadowBlur=0;}
+      changeDirection(dir){const d={Up:[0,-scale],Down:[0,scale],Left:[-scale,0],Right:[scale,0]}[dir];if(!d)return;const[dx,dy]=d;if(dx===-this.xSpeed&&dy===-this.ySpeed)return;this.xSpeed=dx;this.ySpeed=dy;}
+      eatAt(cell){const head=this.body[this.body.length-1];return cell&&head.x===cell.x&&head.y===cell.y;}
+      hasCollision(){const h=this.body[this.body.length-1];return h.x<0||h.x>=canvas.width||h.y<0||h.y>=canvas.height||this.body.slice(0,-1).some(p=>p.x===h.x&&p.y===h.y);}
     }
-    function randomFruit(){const empty=[];for(let y=0;y<rows;y++)for(let x=0;x<cols;x++)if(!snake.body.some(p=>p.x===x*scale&&p.y===y*scale))empty.push({x:x*scale,y:y*scale});return empty.length?empty[Math.floor(Math.random()*empty.length)]:null;}
-    function drawFruit(){if(!fruit)return;ctx.beginPath();ctx.fillStyle='#ff5252';ctx.arc(fruit.x+scale/2,fruit.y+scale/2,scale/2.5,0,Math.PI*2);ctx.fill();}
-    function drawGrid(){ctx.strokeStyle='#eee';for(let x=0;x<canvas.width;x+=scale){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}for(let y=0;y<canvas.height;y+=scale){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}}
-    function renderInitialScreen(){ctx.clearRect(0,0,canvas.width,canvas.height);drawGrid();snake.draw();drawFruit();}
-    // BFS finds the shortest route to food while treating the moving tail as a legal cell.
-    function findPath(){
-      const head=snake.body[snake.body.length-1], start={x:head.x/scale,y:head.y/scale};
-      const dirs=[{x:0,y:-1,name:'Up'},{x:1,y:0,name:'Right'},{x:0,y:1,name:'Down'},{x:-1,y:0,name:'Left'}];
-      const occupied=new Set(snake.body.slice(0,-1).map(p=>`${p.x/scale},${p.y/scale}`));
-      if(!snake.growing)occupied.delete(`${snake.body[0].x/scale},${snake.body[0].y/scale}`);
-      const queue=[{...start,first:null}], seen=new Set([`${start.x},${start.y}`]);
-      for(let i=0;i<queue.length;i++){
-        const node=queue[i];if(fruit&&node.x===fruit.x/scale&&node.y===fruit.y/scale)return node.first;
-        for(const d of dirs){const x=node.x+d.x,y=node.y+d.y,key=`${x},${y}`;if(x<0||x>=cols||y<0||y>=rows||occupied.has(key)||seen.has(key))continue;seen.add(key);queue.push({x,y,first:node.first||d.name});}
-      }
-      return null;
+    function randomApple(occupied){const free=[];for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){const p={x:x*scale,y:y*scale};if(!occupied.some(q=>q.x===p.x&&q.y===p.y))free.push(p);}return free.length?free[Math.floor(Math.random()*free.length)]:null;}
+    function addApples(){while(apples.length<APPLE_COUNT){const a=randomApple([...snake.body,...apples]);if(!a)break;apples.push(a);}}
+    function drawApples(){apples.forEach((a,i)=>{const pulse=1+Math.sin(Date.now()/220+i)*.08;ctx.save();ctx.shadowColor='#ff8290';ctx.shadowBlur=13;ctx.fillStyle=i===0?'#ff7a8a':'#ff9a78';ctx.beginPath();ctx.arc(a.x+10,a.y+10,6.5*pulse,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#ffd0a8';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(a.x+10,a.y+3);ctx.lineTo(a.x+12,a.y);ctx.stroke();ctx.restore();});}
+    function drawGrid(){ctx.fillStyle='#091c22';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='rgba(112,243,245,.075)';ctx.lineWidth=1;for(let x=scale;x<canvas.width;x+=scale){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}for(let y=scale;y<canvas.height;y+=scale){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}}
+    function updateScore(){document.getElementById('score').innerHTML=`Score: ${score} <span aria-hidden="true">·</span> Apples: ${apples.length}`;}
+    function render(){ctx.clearRect(0,0,canvas.width,canvas.height);drawGrid();drawApples();snake.draw();}
+    const dirs=[{x:0,y:-1,name:'Up'},{x:1,y:0,name:'Right'},{x:0,y:1,name:'Down'},{x:-1,y:0,name:'Left'}];
+    function key(p){return `${p.x},${p.y}`;}
+    function findPathTo(target,body,allowTail=true){const head=body[body.length-1],start={x:head.x/scale,y:head.y/scale};const blocked=new Set(body.slice(0,-1).map(p=>`${p.x/scale},${p.y/scale}`));if(allowTail)blocked.delete(`${body[0].x/scale},${body[0].y/scale}`);const queue=[{...start,first:null}],seen=new Set([key(start)]);for(let i=0;i<queue.length;i++){const n=queue[i];if(target&&n.x===target.x/scale&&n.y===target.y/scale)return{first:n.first,distance:Math.abs(n.x-start.x)+Math.abs(n.y-start.y)};for(const d of dirs){const x=n.x+d.x,y=n.y+d.y,k=`${x},${y}`;if(x<0||x>=cols||y<0||y>=rows||blocked.has(k)||seen.has(k))continue;seen.add(k);queue.push({x,y,first:n.first||d.name});}}return null;}
+    function simulatePath(body,first,target){const d=dirs.find(v=>v.name===first),next={x:body.at(-1).x+d.x*scale,y:body.at(-1).y+d.y*scale},eat=target&&next.x===target.x&&next.y===target.y;return eat?[...body,next]:[...body.slice(1),next];}
+    function floodArea(body){const head=body.at(-1),blocked=new Set(body.slice(0,-1).map(key));blocked.delete(key(body[0]));const start={x:head.x/scale,y:head.y/scale},q=[start],seen=new Set([key(start)]);for(let i=0;i<q.length;i++)for(const d of dirs){const p={x:q[i].x+d.x,y:q[i].y+d.y},k=key(p);if(p.x<0||p.x>=cols||p.y<0||p.y>=rows||blocked.has(`${p.x*scale},${p.y*scale}`)||seen.has(k))continue;seen.add(k);q.push(p);}return seen.size;}
+    function chooseAutoDirection(){const head=snake.body.at(-1),candidates=[];for(const apple of apples){const path=findPathTo(apple,snake.body);if(!path?.first)continue;const after=simulatePath(snake.body,path.first,apple),area=floodArea(after);if(area>=after.length)candidates.push({name:path.first,distance:path.distance,area});}
+      candidates.sort((a,b)=>(b.area-a.area)*2+a.distance-(a.distance-(b.distance))); // prefer space, then nearby fruit
+      if(candidates.length){snake.changeDirection(candidates[0].name);return;}
+      // If no apple route leaves enough escape room, chase the tail through a reachable route.
+      const tail=snake.body[0],tailPath=findPathTo(tail,snake.body);if(tailPath?.first){snake.changeDirection(tailPath.first);return;}
+      // Last-resort one-step safety: choose the move with the largest reachable free region.
+      const options=dirs.filter(d=>!(d.x===-snake.xSpeed/scale&&d.y===-snake.ySpeed/scale)).map(d=>{const next={x:head.x+d.x*scale,y:head.y+d.y*scale};if(next.x<0||next.x>=canvas.width||next.y<0||next.y>=canvas.height||snake.body.slice(1,-1).some(p=>p.x===next.x&&p.y===next.y))return null;return{name:d.name,body:[...snake.body.slice(1),next],area:0};}).filter(Boolean);options.forEach(o=>o.area=floodArea(o.body));options.sort((a,b)=>b.area-a.area);if(options[0])snake.changeDirection(options[0].name);
     }
-    // If food is blocked, follow the tail; a legal fallback is safer than a greedy turn.
-    function chooseAutoDirection(){
-      const path=findPath();if(path){snake.changeDirection(path);return;}
-      const head=snake.body[snake.body.length-1], tail=snake.body[0];
-      const dirs=[{name:'Up',dx:0,dy:-1},{name:'Right',dx:1,dy:0},{name:'Down',dx:0,dy:1},{name:'Left',dx:-1,dy:0}];
-      const legal=dirs.filter(d=>!(d.dx===-snake.xSpeed/scale&&d.dy===-snake.ySpeed/scale)).map(d=>({...d,x:head.x/scale+d.dx,y:head.y/scale+d.dy})).filter(d=>d.x>=0&&d.x<cols&&d.y>=0&&d.y<rows&&!snake.body.slice(1,-1).some(p=>p.x===d.x*scale&&p.y===d.y*scale));
-      legal.sort((a,b)=>Math.abs(a.x-tail.x/scale)+Math.abs(a.y-tail.y/scale)-Math.abs(b.x-tail.x/scale)-Math.abs(b.y-tail.y/scale));
-      if(legal.length)snake.changeDirection(legal[0].name);
-    }
-    function gameLoop(){if(!running)return;setTimeout(()=>{if(!running)return;if(autoPlay)chooseAutoDirection();ctx.clearRect(0,0,canvas.width,canvas.height);drawGrid();snake.update();if(snake.eat(fruit)){score++;fruit=randomFruit();document.getElementById('score').innerText=`Score: ${score}`;if(!fruit){gameOver(true);return;}}snake.draw();drawFruit();if(moved&&snake.hasCollision()){gameOver();return;}gameLoop();},200);}
-    function gameOver(won=false){running=false;document.getElementById('gameOver').innerHTML=won?'You Win!<br/><small>Press R to play again</small>':'Game Over<br/><small>Press R to Restart</small>';document.getElementById('gameOver').style.display='block';}
-    function restart(){snake=new Snake();fruit=randomFruit();score=0;moved=false;running=false;document.getElementById('score').innerText='Score: 0';document.getElementById('gameOver').style.display='none';renderInitialScreen();}
+    function gameLoop(){if(!running)return;setTimeout(()=>{if(!running)return;if(autoPlay)chooseAutoDirection();ctx.clearRect(0,0,canvas.width,canvas.height);drawGrid();snake.update();const eaten=apples.findIndex(a=>snake.eatAt(a));if(eaten>=0){apples.splice(eaten,1);snake.growing=true;score++;addApples();updateScore();if(apples.length===0){gameOver(true);return;}}snake.draw();drawApples();if(moved&&snake.hasCollision()){gameOver();return;}gameLoop();},TICK_MS);}
+    function gameOver(won=false){running=false;document.getElementById('gameOver').innerHTML=won?`Board cleared!<br/><small>Score: ${score} · Press R to play again</small>`:`Game Over<br/><small>Score: ${score} · Press R to restart</small>`;document.getElementById('gameOver').style.display='block';}
+    function restart(){snake=new Snake();apples=[];addApples();score=0;moved=false;running=false;document.getElementById('gameOver').style.display='none';updateScore();render();}
     document.getElementById('autoPlay').addEventListener('click',e=>{autoPlay=!autoPlay;e.currentTarget.setAttribute('aria-pressed',String(autoPlay));e.currentTarget.textContent=`Auto Play: ${autoPlay?'On':'Off'}`;if(autoPlay&&!running){running=true;gameLoop();}});
     document.getElementById('restart').addEventListener('click',restart);
     window.addEventListener('keydown',e=>{const dir=e.key.replace('Arrow','');if(e.key.toLowerCase()==='r'){restart();return;}if(!['Up','Down','Left','Right'].includes(dir))return;e.preventDefault();if(autoPlay)return;if(!running){snake.changeDirection(dir);running=true;gameLoop();return;}snake.changeDirection(dir);});
