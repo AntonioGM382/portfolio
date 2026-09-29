@@ -9,8 +9,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     html { scroll-behavior: smooth; }
-    #initiativesDropdown, #skills { scroll-margin-top: 100px; }
-    .interactive-skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}.interactive-skill-card{display:flex;flex-direction:column;min-height:210px;padding:16px;border:1px solid rgba(98,230,196,.24);border-radius:14px;background:linear-gradient(145deg,rgba(98,230,196,.1),rgba(0,188,212,.04));box-shadow:inset 0 1px rgba(255,255,255,.12),0 10px 24px rgba(0,0,0,.12);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}.interactive-skill-card:hover{transform:translateY(-4px);border-color:rgba(98,230,196,.7);box-shadow:0 14px 30px rgba(0,188,212,.18)}.interactive-skill-card .skill-preview{display:flex;align-items:center;justify-content:center;height:62px;margin-bottom:12px;border-radius:10px;background:rgba(0,0,0,.16);color:#62e6c4}.skill-preview i{font-size:1.9rem}.interactive-skill-card h3{margin:0 0 6px;color:#f2fbfc;font-size:.98rem}.interactive-skill-card p{margin:0 0 12px;color:#a9c1c6;font-size:.78rem;line-height:1.45}.launch-skill{display:inline-flex;align-items:center;justify-content:center;gap:7px;margin-top:auto;padding:9px 11px;border:1px solid rgba(98,230,196,.45);border-radius:9px;color:#d9fff5;background:rgba(98,230,196,.1);font:700 .78rem Roboto,sans-serif;text-decoration:none;transition:background .2s ease,color .2s ease}.launch-skill:hover,.launch-skill:focus-visible{color:#092421;background:#62e6c4;outline:none}@media(max-width:900px){.interactive-skills{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.interactive-skills{grid-template-columns:1fr}}
+    #initiativesDropdown, #skillsDropdown { scroll-margin-top: 100px; }
+
+    .skills-intro { max-width: 720px; margin: 0 auto 22px; }
+    .skills-category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 18px; align-items: start; }
+    .modern-skill-card { min-width: 0; padding: clamp(18px, 3vw, 26px); border: 1px solid rgba(98, 230, 196, .2); border-radius: 16px; background: linear-gradient(145deg, rgba(11, 34, 43, .78), rgba(8, 25, 34, .64)); box-shadow: inset 0 1px rgba(255, 255, 255, .06), 0 12px 28px rgba(0, 0, 0, .14); text-align: left; }
+    .modern-skill-card h2 { margin: 0 0 8px; color: #f2fbfc; font-size: 1.12rem; letter-spacing: -.02em; }
+    .modern-skill-card > p { margin: 0 0 18px; color: #a9c1c6; font-size: .9rem; line-height: 1.55; }
+    .skills-lab-entry { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 18px 0 22px; padding: 18px; border: 1px solid rgba(98, 230, 196, .28); border-radius: 14px; background: linear-gradient(110deg, rgba(98, 230, 196, .12), rgba(0, 188, 212, .06)); }
+    .skills-lab-copy { min-width: 0; }
+    .skills-lab-eyebrow { display: block; margin-bottom: 4px; color: #71f2c2; font: 700 .68rem/1.4 'Roboto', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+    .skills-lab-copy strong { display: block; color: #effbfa; font-size: .98rem; }
+    .skills-lab-copy span:last-child { display: block; margin-top: 4px; color: #a9c1c6; font-size: .78rem; line-height: 1.45; }
+    .skills-lab-button { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 11px 16px; border: 1px solid rgba(98, 230, 196, .62); border-radius: 10px; color: #08231f; background: #71f2c2; font: 700 .85rem/1 'Roboto', sans-serif; text-decoration: none; box-shadow: 0 8px 24px rgba(98, 230, 196, .14); transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease; }
+    .skills-lab-button:hover, .skills-lab-button:focus-visible { transform: translateY(-2px); color: #062019; background: #9af8d8; box-shadow: 0 12px 28px rgba(98, 230, 196, .24); outline: none; }
+    .skill-group-label { display: block; margin: 0 0 10px; color: #8ca9b0; font: 700 .68rem/1.4 'Roboto', sans-serif; letter-spacing: .11em; text-transform: uppercase; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .skill-tag { display: inline-flex; align-items: center; min-height: 30px; padding: 6px 10px; border: 1px solid rgba(98, 230, 196, .18); border-radius: 999px; color: #d0e8e8; background: rgba(5, 19, 27, .46); font: 500 .74rem/1.2 'Roboto', sans-serif; letter-spacing: .01em; transition: transform .16s ease, border-color .16s ease, background-color .16s ease, color .16s ease; }
+    .skill-tag:hover { transform: translateY(-2px); border-color: rgba(98, 230, 196, .56); color: #edfffa; background: rgba(98, 230, 196, .1); }
+    .skill-tag.accent { border-color: rgba(0, 188, 212, .25); color: #c3eef1; }
+    .skill-tag.accent:hover { border-color: rgba(0, 188, 212, .62); background: rgba(0, 188, 212, .11); }
+    @media (max-width: 760px) { .skills-category-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) { .skills-lab-entry { align-items: stretch; flex-direction: column; } .skills-lab-button { width: 100%; } }
+    @media (prefers-reduced-motion: reduce) { .skills-lab-button, .skill-tag { transition: none; } .skills-lab-button:hover, .skill-tag:hover { transform: none; } }
   </style>
 </head>
 <body>
@@ -52,17 +73,35 @@
         <details class="dropdown"><summary id="initiativesDropdown">Infrastructure Projects</summary><div class="dropdown-content"><div class="skills-grid">
                     <!-- Capacity Planning hidden by request. --><div class="skill-card" id="JPAINFSV"><div class="skill-info"><h3>JPAINFSV</h3><p>Modular C# Windows service for system monitoring and automated watchdog recovery.</p><a href="projects/jpainfsv.html" class="btn">Learn More</a></div></div><div class="skill-card" id="QueryGPT"><div class="skill-info"><h3>QueryGPT</h3><p>Node.js RAG architecture separating source data from embeddings for semantic retrieval.</p><a href="projects/querygpt.html" class="btn">Learn More</a></div></div><div class="skill-card" id="SplitPoke"><div class="skill-info"><h3>SplitPoke</h3><p>Agentic MCP expense-splitting server.</p><a href="projects/splitpoke.html" class="btn">Learn More</a></div></div><div class="skill-card" id="LocalHealth"><div class="skill-info"><h3>LocalHealth</h3><p>Personal health intelligence engine tracking HRV, resting heart rate, recovery and sleep.</p><a href="projects/localhealth.html" class="btn">Learn More</a></div></div></div></div></details>
 
-        <details class="dropdown"><summary id="skillsDropdown">Skills</summary><div class="dropdown-content"><p class="skills-intro">Technical Project Manager and Lead Engineer focused on shipping resilient products, aligning stakeholders, and turning complex systems into clear delivery plans.</p><div class="skills-category-grid">
-      <section class="modern-skill-card"><h2>Technical Skills</h2><p>Engineering foundations, project work, and the tools used to build, ship, and operate modern products.</p><div class="interactive-skills" aria-label="Interactive technical skill projects">
-        <article class="interactive-skill-card"><div class="skill-preview"><i class="fas fa-gamepad"></i></div><h3>Snake AI</h3><p>Play manually or watch a safety-aware agent plan routes and avoid traps.</p><a class="launch-skill" href="skills/snake-game.html">Launch Snake <i class="fas fa-arrow-up-right-from-square"></i></a></article>
-        <article class="interactive-skill-card"><div class="skill-preview"><i class="fas fa-chart-column"></i></div><h3>Sorting Visualizer</h3><p>Watch sorting algorithms transform data through an interactive visual demo.</p><a class="launch-skill" href="skills/sorting-visualizer.html">Launch Visualizer <i class="fas fa-arrow-up-right-from-square"></i></a></article>
-        <article class="interactive-skill-card"><div class="skill-preview"><i class="fas fa-route"></i></div><h3>A* Pathfinding</h3><p>Explore heuristic search and shortest path discovery on an interactive grid.</p><a class="launch-skill" href="skills/astar-visualizer.html">Launch A* Demo <i class="fas fa-arrow-up-right-from-square"></i></a></article>
-        <article class="interactive-skill-card"><div class="skill-preview"><i class="fas fa-fire"></i></div><h3>Fireworks Particles</h3><p>Paint the sky with pointer-triggered fireworks, glowing sparks, and multi-stage bursts.</p><a class="launch-skill" href="skills/particle-system.html">Launch Fireworks <i class="fas fa-arrow-up-right-from-square"></i></a></article>
-        <article class="interactive-skill-card"><div class="skill-preview"><i class="fas fa-diagram-project"></i></div><h3>Critical Path Simulator</h3><p>Change task durations and inject delays to see the dependency network, slack, and delivery date recalculate live.</p><a class="launch-skill" href="skills/cpm.html">Launch CPM Lab <i class="fas fa-arrow-up-right-from-square"></i></a></article>
-        <article class="interactive-skill-card"><div class="skill-preview"><i class="fas fa-lightbulb"></i></div><h3>2D Raycasting</h3><p>Move a light source and obstacles to reveal real-time rays and soft shadows.</p><a class="launch-skill" href="skills/raycasting.html">Launch Raycasting <i class="fas fa-arrow-up-right-from-square"></i></a></article>
-      </div><div class="skill-tags" style="margin-top:16px"><span class="skill-tag">Next.js</span><span class="skill-tag">React</span><span class="skill-tag">TypeScript</span><span class="skill-tag">Tailwind CSS</span><span class="skill-tag">Django</span><span class="skill-tag">Node.js</span><span class="skill-tag">C#</span><span class="skill-tag">Python</span><span class="skill-tag">MySQL</span><span class="skill-tag">Supabase</span><span class="skill-tag">Vercel</span><span class="skill-tag">Docker</span><span class="skill-tag">AWS ECS</span><span class="skill-tag">Git</span><span class="skill-tag">GitHub Actions</span><span class="skill-tag">MCP</span><span class="skill-tag">Kafka</span><span class="skill-tag">REST APIs</span><span class="skill-tag">SSE</span><span class="skill-tag">RAG Architecture</span><span class="skill-tag">Semantic Retrieval</span><span class="skill-tag">Azure Vision</span></div></section>
-      <section class="modern-skill-card"><h2>Product Management / PM Skills</h2><p>Structured product delivery and collaboration from discovery through rollout.</p><div class="skill-tags"><span class="skill-tag accent">Technical Project Management</span><span class="skill-tag accent">Agile &amp; SDLC Optimization</span><span class="skill-tag accent">Cross-Functional Stakeholder Management</span><span class="skill-tag accent">International Team Alignment &amp; Demos</span><span class="skill-tag accent">Requirements Gathering &amp; User Stories</span><span class="skill-tag accent">Operational Workflow Automation</span><span class="skill-tag accent">Roadmap Planning &amp; Phased Rollouts</span></div></section>
-    </div></div></details>
+        <details class="dropdown"><summary id="skillsDropdown">Skills</summary><div class="dropdown-content">
+          <p class="skills-intro">Technical Project Manager and Lead Engineer focused on shipping resilient products, aligning stakeholders, and turning complex systems into clear delivery plans.</p>
+          <div class="skills-category-grid">
+            <section class="modern-skill-card" aria-labelledby="technical-skills-title">
+              <h2 id="technical-skills-title">Technical Skills</h2>
+              <p>Engineering foundations, project work, and the tools used to build, ship, and operate modern products.</p>
+              <div class="skills-lab-entry">
+                <div class="skills-lab-copy">
+                  <span class="skills-lab-eyebrow">Interactive experience</span>
+                  <strong>Explore hands-on projects</strong>
+                  <span>Try six interactive demos in one focused viewer.</span>
+                </div>
+                <a class="skills-lab-button" href="skills/interactive-lab.html">Explore Skills Lab <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+              </div>
+              <span class="skill-group-label">Engineering toolkit</span>
+              <ul class="skill-tags" aria-label="Engineering toolkit">
+                <li class="skill-tag">Next.js</li><li class="skill-tag">React</li><li class="skill-tag">TypeScript</li><li class="skill-tag">Tailwind CSS</li><li class="skill-tag">Django</li><li class="skill-tag">Node.js</li><li class="skill-tag">C#</li><li class="skill-tag">Python</li><li class="skill-tag">MySQL</li><li class="skill-tag">Supabase</li><li class="skill-tag">Vercel</li><li class="skill-tag">Docker</li><li class="skill-tag">AWS ECS</li><li class="skill-tag">Git</li><li class="skill-tag">GitHub Actions</li><li class="skill-tag">MCP</li><li class="skill-tag">Kafka</li><li class="skill-tag">REST APIs</li><li class="skill-tag">SSE</li><li class="skill-tag">RAG Architecture</li><li class="skill-tag">Semantic Retrieval</li><li class="skill-tag">Azure Vision</li>
+              </ul>
+            </section>
+            <section class="modern-skill-card" aria-labelledby="product-skills-title">
+              <h2 id="product-skills-title">Product Management</h2>
+              <p>Structured product delivery and collaboration from discovery through rollout.</p>
+              <span class="skill-group-label">Product and delivery</span>
+              <ul class="skill-tags" aria-label="Product and delivery skills">
+                <li class="skill-tag accent">Technical Project Management</li><li class="skill-tag accent">Agile and SDLC Optimization</li><li class="skill-tag accent">Cross-Functional Stakeholder Management</li><li class="skill-tag accent">International Team Alignment and Demos</li><li class="skill-tag accent">Requirements Gathering and User Stories</li><li class="skill-tag accent">Operational Workflow Automation</li><li class="skill-tag accent">Roadmap Planning and Phased Rollouts</li>
+              </ul>
+            </section>
+          </div>
+        </div></details>
     </div>
 </section>
 
